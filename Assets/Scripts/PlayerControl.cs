@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,7 +15,7 @@ public class PlayerControl : MonoBehaviour
 	public float jumpDistance = 0.75f; // відстань від центру об'єкта до поверхні
 	public bool facingRight = true; // в яку сторону дивиться
 	public KeyCode jumpButton = KeyCode.Space; // кнопка для стрибка
-	public GameObject spawnPoint;
+	public GameObject spawnPoint; //spawn
 
 	private Vector3 direction;
 	private Rigidbody2D body;
@@ -32,7 +33,7 @@ public class PlayerControl : MonoBehaviour
 
 	void Start()
 	{
-		body = GetComponent<Rigidbody2D>();
+        body = GetComponent<Rigidbody2D>();
 		body.freezeRotation = true;
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
@@ -55,13 +56,13 @@ public class PlayerControl : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
-			Debug.Log("run");
+            //Debug.Log("run");
 			body.AddForce(direction * body.mass * speed * acceleration * runSpeed);
 
 		}
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
-			Debug.Log("walk");
+            //Debug.Log("walk");
 			body.AddForce(direction * body.mass * speed * acceleration);
 		}
 
@@ -81,53 +82,78 @@ public class PlayerControl : MonoBehaviour
 
 	void Update()
 	{
-		Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
+        //Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
 
 		if (Input.GetKeyDown(jumpButton) && GetJump())
 		{
 			body.velocity = new Vector2(0, jumpForce);
 		}
 
-		if (Input.GetKeyDown(KeyCode.Q))
-		{
-			DamagePlayer(10);
-		}
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			UseEnergy(10);
-		}
+		//if (Input.GetKeyDown(KeyCode.E))
+		//{
+		//	UseEnergy(10);
+		//}
 
 		float h = Input.GetAxis("Horizontal");
 
 		direction = new Vector2(h, 0);
 
 		if (h > 0 && !facingRight) Flip(); else if (h < 0 && facingRight) Flip();
+
+        healthBar.SetHealth(curHealth);
+    }
+
+    public void DamagePlayer(int damage)
+	{
+		if (curHealth > 0)
+        {
+			curHealth -= damage;
+		}
+        else
+        {
+			DiePlayer();
+        }
 	}
+
+	public void DiePlayer()
+	{
+        curHealth = 0;
+        isDead = true;
+        this.transform.position = spawnPoint.transform.position;
+        curHealth = maxHealth;
+    }
+
+	public void UseEnergy(int energy)
+	{
+		curEnergy -= energy;
+		energyBar.SetEnergy(curEnergy);
+	}
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "DeadZone")
         {
-			isDead = true;
-			this.transform.position = spawnPoint.transform.position;
-		}
-    }
-	public void DamagePlayer(int damage)
-	{
-		if(curHealth > 0)
-        {
-			curHealth -= damage;
-
-			healthBar.SetHealth(curHealth);
-		}
-        else
-        {
-			isDead = true;
+			DiePlayer();
         }
-	}
-	public void UseEnergy(int energy)
-	{
-		curEnergy -= energy;
+        if (collision.gameObject.tag == "Blade")
+        {
+            DamagePlayer(25);
+            UnityEngine.Debug.Log("Damage from blade!");
+        }
+    }
 
-		energyBar.SetEnergy(curEnergy);
-	}
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+        if (collision.gameObject.tag == "Spike")
+        {
+            DamagePlayer(25);
+            UnityEngine.Debug.Log("Damage from spike!");
+        }
+        if (collision.gameObject.tag == "Blade")
+        {
+            DamagePlayer(25);
+            UnityEngine.Debug.Log("Damage from blade!");
+        }
+    }
+
 }

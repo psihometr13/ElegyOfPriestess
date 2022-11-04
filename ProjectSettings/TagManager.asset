@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - DeadZone
   - Enemy
+  - Spike
+  - Blade
+  - NPC
   layers:
   - Default
   - TransparentFX
