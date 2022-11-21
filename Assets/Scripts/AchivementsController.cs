@@ -1,20 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using System.Collections;
 
-public class AchivementsController : MonoBehaviour
+public class AchivementsController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public GameObject[] achivements;
+    public string text;
 
-    // Start is called before the first frame update
-    void Start()
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData e)
     {
-        
+        Debug.Log(text);
+        TooltipMenu.text = text;
+        TooltipMenu.isUI = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    void IPointerExitHandler.OnPointerExit(PointerEventData e)
     {
-        
+        TooltipMenu.isUI = false;
     }
 }
