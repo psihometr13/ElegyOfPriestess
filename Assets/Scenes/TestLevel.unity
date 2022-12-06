@@ -1226,7 +1226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
-  bottomPoint: {fileID: 1153137857}
+  bottomPoint: {fileID: 2113939759}
   topPoint: {fileID: 348972173}
 --- !u!1 &885014084
 GameObject:

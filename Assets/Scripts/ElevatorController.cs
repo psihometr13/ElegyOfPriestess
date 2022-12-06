@@ -11,11 +11,11 @@ public class ElevatorController : MonoBehaviour
 
     void CheckPosition()
     {
-        if (transform.position.y <= bottomPoint.position.y + 3)
+        if (transform.position.y <= bottomPoint.position.y)
         {
             isMovingDown = false;
         }
-        else if (transform.position.y > topPoint.position.y + 2)
+        else if (transform.position.y > topPoint.position.y)
         {
             isMovingDown = true;
         }
@@ -44,7 +44,7 @@ public class ElevatorController : MonoBehaviour
             {
                 if (transform.position != topPoint.position)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, topPoint.position.y + 10), speed * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, topPoint.position.y), speed * Time.deltaTime);
                 }
             }
         }
