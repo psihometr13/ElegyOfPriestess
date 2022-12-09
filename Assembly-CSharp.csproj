@@ -68,9 +68,9 @@
     <Compile Include="Assets\Scripts\EnergyBar.cs" />
     <Compile Include="Assets\Scripts\SavesController.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\TooltipMenu.cs" />
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\LogoController.cs" />
-    <Compile Include="Assets\Scripts\TooltipMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Sprites\Fonts\Spirax\OFL.txt" />

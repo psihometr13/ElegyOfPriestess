@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-	//Move
-	public float speed = 5; // швидкість руху
+    public static PlayerControl Instance { get; private set; }
+
+    //Move
+    public float speed = 5; // швидкість руху
 	public float acceleration = 1; // прискорення
 	public float runSpeed = 1; // run
 	public float jumpForce = 15; // сила стрибка
@@ -31,7 +33,30 @@ public class PlayerControl : MonoBehaviour
 	public int maxEnergy = 100;
 	public EnergyBar energyBar;
 
-	void Start()
+    //Achimevents
+    public int countOfDeaths = 0;
+    public int countOfNotes = 0;
+    public int countOfKilledBosses = 0;
+    public int countOfVisitedLoc = 0;
+    public int countOfUsedHeals = 0;
+    public int countOfMagic = 0;
+    public int countOfChests = 0;
+
+	private void Awake()
+	{
+		// If there is an instance, and it's not me, delete myself.
+
+		if (Instance != null && Instance != this)
+		{
+			Destroy(this);
+		}
+		else
+		{
+			Instance = this;
+		}
+	}
+
+        void Start()
 	{
         body = GetComponent<Rigidbody2D>();
 		body.freezeRotation = true;
