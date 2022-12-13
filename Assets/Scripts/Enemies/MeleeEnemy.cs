@@ -20,6 +20,7 @@ public class MeleeEnemy : MonoBehaviour
     //References
     //private Animator anim;
     private EnemyPatrol enemyPatrol;
+    private PlayerControl playerHealth;
 
     private void Awake()
     {
@@ -38,6 +39,8 @@ public class MeleeEnemy : MonoBehaviour
             {
                 cooldownTimer = 0;
                 //anim.SetTrigger("meleeAttack");
+
+                if(playerHealth) DamagePlayer();
             }
         }
 
@@ -52,8 +55,8 @@ public class MeleeEnemy : MonoBehaviour
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
             0, Vector2.left, 0, playerLayer);
 
-        //if (hit.collider != null)
-        //    playerHealth = hit.transform.GetComponent<Health>();
+        if (hit.collider != null)
+            playerHealth = hit.transform.GetComponent<PlayerControl>();
 
         return hit.collider != null;
     }

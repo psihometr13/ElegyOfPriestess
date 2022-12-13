@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    [SerializeField] private float damage;
     [SerializeField] private float speed;
     [SerializeField] private float resetTime;
     private float lifetime;
@@ -36,19 +37,24 @@ public class EnemyProjectile : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         hit = true;
-        //base.OnTriggerEnter2D(collision); //Execute logic from parent script first
+        //OnTriggerEnter2D(coll); //Execute logic from parent script first
         coll.enabled = false;
-
+        if (collision.gameObject.tag == "Player") DamagePlayer();
+        Deactivate(); //When this hits any object deactivate arrow
         //if (anim != null)
         //    anim.SetTrigger("explode"); //When the object is a fireball explode it
-        //else
-            gameObject.SetActive(false); //When this hits any object deactivate arrow
     }
+
     private void Deactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    private void DamagePlayer()
+    {
+            PlayerControl.Instance.DamagePlayer(damage);
     }
 }

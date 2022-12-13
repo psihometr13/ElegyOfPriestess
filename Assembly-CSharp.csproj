@@ -61,17 +61,21 @@
     <Compile Include="Assets\Scripts\AchivementsController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Conversation.cs" />
     <Compile Include="Assets\Scripts\BladeController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\MeleeEnemy.cs" />
     <Compile Include="Assets\Scripts\FallingCheck.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableConversation.cs" />
     <Compile Include="Assets\Scripts\ElevatorController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableSetParamAction.cs" />
+    <Compile Include="Assets\Scripts\Enemies\RangedEnemy.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\UI\ConversationManager.cs" />
     <Compile Include="Assets\Scripts\DialogManager.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyFireballHolder.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\UI\UIConversationButton.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\NPCConversation.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableCondition.cs" />
     <Compile Include="Assets\Scripts\Patroler.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyHealth.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Condition.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
@@ -83,19 +87,15 @@
     <Compile Include="Assets\Scripts\EnergyBar.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableParameter.cs" />
     <Compile Include="Assets\Scripts\SavesController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyProjectile.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Connection.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyPatrol.cs" />
     <Compile Include="Assets\Scripts\TooltipMenu.cs" />
     <Compile Include="Assets\DialogueEditor\Example\ExampleInputManager.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\NodeEventHolder.cs" />
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\LogoController.cs" />
-    <Compile Include="Assets\Scripts\Enemies\MeleeEnemy.cs" />
-    <Compile Include="Assets\Scripts\Enemies\EnemyPatrol.cs" />
-    <Compile Include="Assets\Scripts\Enemies\EnemyHealth.cs" />
-    <Compile Include="Assets\Scripts\Enemies\RangedEnemy.cs" />
-    <Compile Include="Assets\Scripts\Enemies\EnemyProjectile.cs" />
-    <Compile Include="Assets\Scripts\Enemies\EnemyFireballHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
