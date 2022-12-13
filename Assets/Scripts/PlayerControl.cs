@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using DialogueEditor;
+using System;
+using UnityEngine.Diagnostics;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
+[Serializable]
 public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl Instance { get; private set; }
@@ -20,16 +24,18 @@ public class PlayerControl : MonoBehaviour
 	public GameObject spawnPoint; //spawn
 
 	private Vector3 direction;
-	private Rigidbody2D body;
+	public static Rigidbody2D rb;
 
-	//Health
-	public int curHealth = 0;
-	public int maxHealth = 100;
+    //Health
+    [SerializeField]
+    public float curHealth = 0;
+	public float maxHealth = 100;
 	public HealthBar healthBar;
 	private bool isDead = true;
 
-	//Energy
-	public int curEnergy = 0;
+    //Energy
+    [SerializeField]
+    public int curEnergy = 0;
 	public int maxEnergy = 100;
 	public EnergyBar energyBar;
 
@@ -41,6 +47,9 @@ public class PlayerControl : MonoBehaviour
     public int countOfUsedHeals = 0;
     public int countOfMagic = 0;
     public int countOfChests = 0;
+
+	//Dialog
+	public NPCConversation myConversation;
 
 	private void Awake()
 	{
@@ -58,8 +67,8 @@ public class PlayerControl : MonoBehaviour
 
         void Start()
 	{
-        body = GetComponent<Rigidbody2D>();
-		body.freezeRotation = true;
+        rb = GetComponent<Rigidbody2D>();
+		rb.freezeRotation = true;
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
 	}
@@ -82,18 +91,20 @@ public class PlayerControl : MonoBehaviour
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
             //Debug.Log("run");
-			body.AddForce(direction * body.mass * speed * acceleration * runSpeed);
+			rb.AddForce(direction * rb.mass * speed * acceleration * runSpeed);
 
 		}
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
             //Debug.Log("walk");
-			body.AddForce(direction * body.mass * speed * acceleration);
+            //float move = Input.GetAxis("Horizontal");
+			//GetComponent<Rigidbody2D>().velocity = new Vector2(move * speed * acceleration, GetComponent<Rigidbody2D>().velocity.y);
+			rb.AddForce(direction * rb.mass * speed * acceleration);
 		}
 
-		if (Mathf.Abs(body.velocity.x) > speed)
+		if (Mathf.Abs(rb.velocity.x) > speed)
 		{
-			body.velocity = new Vector2(Mathf.Sign(body.velocity.x) * speed, body.velocity.y);
+			rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * speed, rb.velocity.y);
 		}
 	}
 
@@ -111,7 +122,7 @@ public class PlayerControl : MonoBehaviour
 
 		if (Input.GetKeyDown(jumpButton) && GetJump())
 		{
-			body.velocity = new Vector2(0, jumpForce);
+			rb.velocity = new Vector2(0, jumpForce);
 		}
 
 		//if (Input.GetKeyDown(KeyCode.E))
@@ -128,7 +139,7 @@ public class PlayerControl : MonoBehaviour
         healthBar.SetHealth(curHealth);
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(float damage)
 	{
 		if (curHealth > 0)
         {
@@ -167,18 +178,27 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnCollisionStay2D(Collision2D collision)
 	{
+		float damagePerSecond = 25;
+
         if (collision.gameObject.tag == "Spike")
         {
-            DamagePlayer(25);
+            DamagePlayer(damagePerSecond* Time.deltaTime);
             UnityEngine.Debug.Log("Damage from spike!");
         }
         if (collision.gameObject.tag == "Blade")
         {
-            DamagePlayer(25);
+            DamagePlayer(damagePerSecond * Time.deltaTime);
             UnityEngine.Debug.Log("Damage from blade!");
         }
     }
 
+	private void OnMouseOver()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			ConversationManager.Instance.StartConversation(myConversation);
+		}
+	}
 }

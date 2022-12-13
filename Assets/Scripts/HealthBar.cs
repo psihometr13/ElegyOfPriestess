@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
         healthBar.value = PlayerControl.Instance.maxHealth;
     }
 
-    public void SetHealth(int hp)
+    public void SetHealth(float hp)
     {
         healthBar.value = hp;
     }
