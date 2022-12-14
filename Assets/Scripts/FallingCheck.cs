@@ -11,7 +11,7 @@ public class FallingCheck : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Ground"))
         {
-            Debug.Log(PlayerControl.rb.velocity.y);
+            //Debug.Log(PlayerControl.rb.velocity.y);
         }
 
         if (collision.gameObject.tag.Equals("Ground") && PlayerControl.rb.velocity.y < fallDistance)

@@ -11,10 +11,10 @@ using UnityEngine.Diagnostics;
 [Serializable]
 public class PlayerControl : MonoBehaviour
 {
-    public static PlayerControl Instance { get; private set; }
+	public static PlayerControl Instance { get; private set; }
 
-    //Move
-    public float speed = 5; // швидкість руху
+	//Move
+	public float speed = 5; // швидкість руху
 	public float acceleration = 1; // прискорення
 	public float runSpeed = 1; // run
 	public float jumpForce = 15; // сила стрибка
@@ -26,30 +26,32 @@ public class PlayerControl : MonoBehaviour
 	private Vector3 direction;
 	public static Rigidbody2D rb;
 
-    //Health
-    [SerializeField]
-    public float curHealth = 0;
-	public float maxHealth = 100;
+	//Health
+	[SerializeField] public float curHealth = 0;
+	[SerializeField] public float maxHealth = 100;
 	public HealthBar healthBar;
 	private bool isDead = true;
 
-    //Energy
-    [SerializeField]
-    public int curEnergy = 0;
-	public int maxEnergy = 100;
+	//Energy
+	[SerializeField] public int curEnergy = 0;
+	[SerializeField] public int maxEnergy = 100;
 	public EnergyBar energyBar;
 
-    //Achimevents
-    public int countOfDeaths = 0;
-    public int countOfNotes = 0;
-    public int countOfKilledBosses = 0;
-    public int countOfVisitedLoc = 0;
-    public int countOfUsedHeals = 0;
-    public int countOfMagic = 0;
-    public int countOfChests = 0;
+	//Achimevents
+	public int countOfDeaths = 0;
+	public int countOfNotes = 0;
+	public int countOfKilledBosses = 0;
+	public int countOfVisitedLoc = 0;
+	public int countOfUsedHeals = 0;
+	public int countOfMagic = 0;
+	public int countOfChests = 0;
 
 	//Dialog
 	public NPCConversation myConversation;
+
+	//Exp
+	[SerializeField] public float curExp = 0;
+	[SerializeField] public float maxExp = 100;
 
 	private void Awake()
 	{
@@ -65,9 +67,9 @@ public class PlayerControl : MonoBehaviour
 		}
 	}
 
-        void Start()
+	void Start()
 	{
-        rb = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody2D>();
 		rb.freezeRotation = true;
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
@@ -90,14 +92,14 @@ public class PlayerControl : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
-            //Debug.Log("run");
+			//Debug.Log("run");
 			rb.AddForce(direction * rb.mass * speed * acceleration * runSpeed);
 
 		}
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
-            //Debug.Log("walk");
-            //float move = Input.GetAxis("Horizontal");
+			//Debug.Log("walk");
+			//float move = Input.GetAxis("Horizontal");
 			//GetComponent<Rigidbody2D>().velocity = new Vector2(move * speed * acceleration, GetComponent<Rigidbody2D>().velocity.y);
 			rb.AddForce(direction * rb.mass * speed * acceleration);
 		}
@@ -118,17 +120,17 @@ public class PlayerControl : MonoBehaviour
 
 	void Update()
 	{
-        //Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
+		//Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
 
 		if (Input.GetKeyDown(jumpButton) && GetJump())
 		{
 			rb.velocity = new Vector2(0, jumpForce);
 		}
 
-		//if (Input.GetKeyDown(KeyCode.E))
-		//{
-		//	UseEnergy(10);
-		//}
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			Attack(10);
+		}
 
 		float h = Input.GetAxis("Horizontal");
 
@@ -136,28 +138,33 @@ public class PlayerControl : MonoBehaviour
 
 		if (h > 0 && !facingRight) Flip(); else if (h < 0 && facingRight) Flip();
 
-        healthBar.SetHealth(curHealth);
-    }
+		healthBar.SetHealth(curHealth);
+	}
 
-    public void DamagePlayer(float damage)
+	public void AddExp(float exp)
+	{
+		curExp += exp;
+	}
+
+	public void DamagePlayer(float damage)
 	{
 		if (curHealth > 0)
-        {
+		{
 			curHealth -= damage;
 		}
-        else
-        {
+		else
+		{
 			DiePlayer();
-        }
+		}
 	}
 
 	public void DiePlayer()
 	{
-        curHealth = 0;
-        isDead = true;
-        this.transform.position = spawnPoint.transform.position;
-        curHealth = maxHealth;
-    }
+		curHealth = 0;
+		isDead = true;
+		this.transform.position = spawnPoint.transform.position;
+		curHealth = maxHealth;
+	}
 
 	public void UseEnergy(int energy)
 	{
@@ -165,34 +172,40 @@ public class PlayerControl : MonoBehaviour
 		energyBar.SetEnergy(curEnergy);
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "DeadZone")
-        {
+	void Attack(int energy)
+	{
+		UseEnergy(energy);
+		GameObject.FindGameObjectsWithTag("Boss")[0].GetComponent<BossHealth>().TakeDamage(energy);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag == "DeadZone")
+		{
 			DiePlayer();
-        }
-        if (collision.gameObject.tag == "Blade")
-        {
-            DamagePlayer(25);
-            UnityEngine.Debug.Log("Damage from blade!");
-        }
-    }
+		}
+		if (collision.gameObject.tag == "Blade")
+		{
+			DamagePlayer(25);
+			UnityEngine.Debug.Log("Damage from blade!");
+		}
+	}
 
 	private void OnCollisionStay2D(Collision2D collision)
 	{
 		float damagePerSecond = 25;
 
-        if (collision.gameObject.tag == "Spike")
-        {
-            DamagePlayer(damagePerSecond* Time.deltaTime);
-            UnityEngine.Debug.Log("Damage from spike!");
-        }
-        if (collision.gameObject.tag == "Blade")
-        {
-            DamagePlayer(damagePerSecond * Time.deltaTime);
-            UnityEngine.Debug.Log("Damage from blade!");
-        }
-    }
+		if (collision.gameObject.tag == "Spike")
+		{
+			DamagePlayer(damagePerSecond * Time.deltaTime);
+			UnityEngine.Debug.Log("Damage from spike!");
+		}
+		if (collision.gameObject.tag == "Blade")
+		{
+			DamagePlayer(damagePerSecond * Time.deltaTime);
+			UnityEngine.Debug.Log("Damage from blade!");
+		}
+	}
 
 	private void OnMouseOver()
 	{

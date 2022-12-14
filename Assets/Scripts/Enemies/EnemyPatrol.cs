@@ -15,10 +15,14 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private float speed;
     private Vector3 initScale;
     private bool movingLeft;
+    [SerializeField] private float stoppingDistance; //відстань початку погоні
 
     [Header("Idle Behaviour")]
     [SerializeField] private float idleDuration;
     private float idleTimer;
+
+    bool patrol = false;
+    bool chase = false;
 
     //[Header("Enemy Animator")]
     //[SerializeField] private Animator anim;
@@ -34,19 +38,23 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Update()
     {
-        if (movingLeft)
+        if (Vector2.Distance(this.transform.position, PlayerControl.Instance.transform.position) > stoppingDistance && chase == false)
         {
-            if (enemy.position.x >= leftEdge.position.x)
-                MoveInDirection(-1);
-            else
-                DirectionChange();
+            patrol = true;
         }
-        else
+        else if (Vector2.Distance(this.transform.position, PlayerControl.Instance.transform.position) <= stoppingDistance)
         {
-            if (enemy.position.x <= rightEdge.position.x)
-                MoveInDirection(1);
-            else
-                DirectionChange();
+            chase = true;
+            patrol = false;
+        }
+
+        if (patrol == true)
+        {
+            Patrol();
+        }
+        else if (chase == true)
+        {
+            ChasePlayer();
         }
     }
 
@@ -71,5 +79,32 @@ public class EnemyPatrol : MonoBehaviour
         //Move in that direction
         enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction * speed,
             enemy.position.y, enemy.position.z);
+    }
+
+    private void ChasePlayer()
+    {
+        Debug.Log("Chase!");
+
+        idleTimer = 0;
+
+        enemy.position = new Vector2(PlayerControl.Instance.transform.position.x + Time.deltaTime * speed * 2, PlayerControl.Instance.transform.position.y);
+    }
+
+    private void Patrol()
+    {
+        if (movingLeft)
+        {
+            if (enemy.position.x >= leftEdge.position.x)
+                MoveInDirection(-1);
+            else
+                DirectionChange();
+        }
+        else
+        {
+            if (enemy.position.x <= rightEdge.position.x)
+                MoveInDirection(1);
+            else
+                DirectionChange();
+        }
     }
 }

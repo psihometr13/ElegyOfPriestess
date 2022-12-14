@@ -11,6 +11,8 @@ TagManager:
   - Spike
   - Blade
   - NPC
+  - PatrolPoint
+  - Boss
   layers:
   - Default
   - TransparentFX
