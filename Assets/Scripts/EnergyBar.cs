@@ -14,7 +14,7 @@ public class EnergyBar : MonoBehaviour
         energyBar.value = PlayerControl.Instance.maxEnergy;
     }
 
-    public void SetEnergy(int energyPoints)
+    public void SetEnergy(float energyPoints)
     {
         energyBar.value = energyPoints;
     }

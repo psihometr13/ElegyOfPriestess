@@ -5,6 +5,7 @@ using UnityEngine;
 using DialogueEditor;
 using System;
 using UnityEngine.Diagnostics;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -31,14 +32,19 @@ public class PlayerControl : MonoBehaviour
 	[SerializeField] public float maxHealth = 100;
 	public HealthBar healthBar;
 	private bool isDead = true;
+    [SerializeField] private int restoreHealthCount = 10;
+    [SerializeField] private int restoreHealthEnergyUsage = 50;
+    [SerializeField] public float maxDamage = 100;
 
-	//Energy
-	[SerializeField] public int curEnergy = 0;
-	[SerializeField] public int maxEnergy = 100;
+    //Energy
+    [SerializeField] public float curEnergy = 0;
+	[SerializeField] public float maxEnergy = 100;
 	public EnergyBar energyBar;
+    [SerializeField] private int restoreEnergyCount = 10;
 
-	//Achimevents
-	public int countOfDeaths = 0;
+
+    //Achimevents
+    public int countOfDeaths = 0;
 	public int countOfNotes = 0;
 	public int countOfKilledBosses = 0;
 	public int countOfVisitedLoc = 0;
@@ -120,9 +126,14 @@ public class PlayerControl : MonoBehaviour
 
 	void Update()
 	{
-		//Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
+		RestoreHealth();
+		RestoreEnergy();
+        healthBar.SetHealth(curHealth);
+        energyBar.SetEnergy(curEnergy);
 
-		if (Input.GetKeyDown(jumpButton) && GetJump())
+        //Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
+
+        if (Input.GetKeyDown(jumpButton) && GetJump())
 		{
 			rb.velocity = new Vector2(0, jumpForce);
 		}
@@ -137,18 +148,16 @@ public class PlayerControl : MonoBehaviour
 		direction = new Vector2(h, 0);
 
 		if (h > 0 && !facingRight) Flip(); else if (h < 0 && facingRight) Flip();
+    }
 
-		healthBar.SetHealth(curHealth);
-	}
-
-	public void AddExp(float exp)
+    public void AddExp(float exp)
 	{
 		curExp += exp;
 	}
 
 	public void DamagePlayer(float damage)
 	{
-		if (curHealth > 0)
+		if (curHealth > 0 && curHealth >= damage)
 		{
 			curHealth -= damage;
 		}
@@ -168,8 +177,10 @@ public class PlayerControl : MonoBehaviour
 
 	public void UseEnergy(int energy)
 	{
-		curEnergy -= energy;
-		energyBar.SetEnergy(curEnergy);
+		if(curHealth > 0 && curEnergy > 0 && curEnergy >= energy)
+			curEnergy -= energy;
+		else
+			curEnergy = 0;
 	}
 
 	void Attack(int energy)
@@ -180,7 +191,7 @@ public class PlayerControl : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "DeadZone")
+		if (collision.gameObject.tag == "DeadZone")
 		{
 			DiePlayer();
 		}
@@ -189,7 +200,58 @@ public class PlayerControl : MonoBehaviour
 			DamagePlayer(25);
 			UnityEngine.Debug.Log("Damage from blade!");
 		}
+
+		if (collision.gameObject.tag == "Rosary")
+        {
+			UnityEngine.Debug.Log("Rosary used");
+            maxHealth = maxHealth * 1.25f;
+			Destroy(collision.gameObject);
+        }
+
+		if (collision.gameObject.tag == "Blindfold")
+        {
+			UnityEngine.Debug.Log("Blindfold used");
+            maxDamage = maxDamage * 115 / 100;
+			Destroy(collision.gameObject);
+        }
+		
+		if (collision.gameObject.tag == "Bathilda's-ring")
+        {
+			UnityEngine.Debug.Log("Bathilda's ring used");
+            maxEnergy = maxEnergy * 1.25f;
+			Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.tag == "Stick")
+        {
+            GameObject Child = gameObject.transform.Find("stick").gameObject;
+            Instantiate(collision.gameObject, Child.transform.position, Quaternion.Euler(0, 0, -90), this.gameObject.transform);
+            Destroy(collision.gameObject);
+			Destroy(Child);
+            UnityEngine.Debug.Log("New Stick used");
+        }
+    }
+
+	void RestoreHealth()
+	{
+		if (curHealth >= 0 && curHealth < maxHealth)
+		{
+			curHealth += Time.deltaTime * restoreHealthCount;
+		}
+		if (Input.GetKeyDown(KeyCode.H) && curHealth >= 0 && curHealth < maxHealth)
+		{
+			UseEnergy(restoreHealthEnergyUsage);
+            curHealth = maxHealth;
+        }
 	}
+
+	void RestoreEnergy()
+	{
+        if (curEnergy >= 0 && curEnergy < maxEnergy)
+        {
+            curEnergy += Time.deltaTime * restoreEnergyCount;
+        }
+    }
 
 	private void OnCollisionStay2D(Collision2D collision)
 	{
@@ -207,7 +269,7 @@ public class PlayerControl : MonoBehaviour
 		}
 	}
 
-	private void OnMouseOver()
+    private void OnMouseOver()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{

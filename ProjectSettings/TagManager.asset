@@ -7,12 +7,19 @@ TagManager:
   - Ladder
   - Ground
   - DeadZone
-  - Enemy
   - Spike
   - Blade
   - NPC
   - PatrolPoint
   - Boss
+  - MeleeEnemy
+  - RangedEnemy
+  - Enemy
+  - Menu
+  - Rosary
+  - Blindfold
+  - Bathilda's-ring
+  - Stick
   layers:
   - Default
   - TransparentFX

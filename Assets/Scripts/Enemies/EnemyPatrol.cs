@@ -21,9 +21,6 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private float idleDuration;
     private float idleTimer;
 
-    bool patrol = false;
-    bool chase = false;
-
     //[Header("Enemy Animator")]
     //[SerializeField] private Animator anim;
 
@@ -38,24 +35,7 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Update()
     {
-        if (Vector2.Distance(this.transform.position, PlayerControl.Instance.transform.position) > stoppingDistance && chase == false)
-        {
-            patrol = true;
-        }
-        else if (Vector2.Distance(this.transform.position, PlayerControl.Instance.transform.position) <= stoppingDistance)
-        {
-            chase = true;
-            patrol = false;
-        }
-
-        if (patrol == true)
-        {
-            Patrol();
-        }
-        else if (chase == true)
-        {
-            ChasePlayer();
-        }
+        Patrol();
     }
 
     private void DirectionChange()
@@ -79,15 +59,6 @@ public class EnemyPatrol : MonoBehaviour
         //Move in that direction
         enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction * speed,
             enemy.position.y, enemy.position.z);
-    }
-
-    private void ChasePlayer()
-    {
-        Debug.Log("Chase!");
-
-        idleTimer = 0;
-
-        enemy.position = new Vector2(PlayerControl.Instance.transform.position.x + Time.deltaTime * speed * 2, PlayerControl.Instance.transform.position.y);
     }
 
     private void Patrol()
