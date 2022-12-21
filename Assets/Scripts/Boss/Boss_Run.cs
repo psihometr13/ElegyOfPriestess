@@ -32,7 +32,7 @@ public class Boss_Run : StateMachineBehaviour
 
         if(Vector2.Distance(target, rb.gameObject.transform.position) <= fightRange)
         {
-            SoundManager.Instance.PlayMusic(BattleMusic);
+            //SoundManager.Instance.PlayMusic(BattleMusic);
 
             Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
             rb.MovePosition(newPos);

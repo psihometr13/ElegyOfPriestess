@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 
 public class BossWeapon : MonoBehaviour
@@ -17,11 +18,16 @@ public class BossWeapon : MonoBehaviour
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
 
-        Collider2D colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
-        if (colInfo != null)
+        //Collider2D colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision != null)
         {
-            Debug.Log(colInfo.tag);
-            if (colInfo.tag == "Player")
+            Debug.Log(collision.gameObject.tag);
+            if (collision.gameObject.tag == "Player")
             {
                 PlayerControl.Instance.DamagePlayer(attackDamage);
                 Debug.Log("Attack from Pontiff!");
@@ -35,16 +41,16 @@ public class BossWeapon : MonoBehaviour
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
 
-        Collider2D colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
-        if (colInfo != null)
-        {
-            Debug.Log(colInfo.tag);
-            if (colInfo.tag == "Player")
-            {
-                PlayerControl.Instance.DamagePlayer(attackDamage);
-                Debug.Log("Enranged attack from Pontiff!");
-            }
-        }
+        //Collider2D colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
+        //if (colInfo != null)
+        //{
+        //    Debug.Log(colInfo.tag);
+        //    if (colInfo.tag == "Player")
+        //    {
+        //        PlayerControl.Instance.DamagePlayer(attackDamage);
+        //        Debug.Log("Enranged attack from Pontiff!");
+        //    }
+        //}
     }
 
     void OnDrawGizmosSelected()

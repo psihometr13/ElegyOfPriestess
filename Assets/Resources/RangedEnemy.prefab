@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 566154155990065893}
   - component: {fileID: 566154155990065892}
   - component: {fileID: 566154155990065895}
-  - component: {fileID: 566154155990065889}
   m_Layer: 0
   m_Name: EnemyFireball
   m_TagString: Untagged
@@ -96,7 +95,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566154155990065901}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -122,35 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &566154155990065895
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566154155990065901}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
-  m_EdgeRadius: 0
---- !u!61 &566154155990065889
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,7 +244,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111247693474363}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -297,8 +270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111247693474361
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -472,7 +445,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248138780276}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -498,8 +471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248138780554
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -621,7 +594,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248330117307}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -647,7 +620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
+  speed: 10
   resetTime: 5
 --- !u!61 &2319111248330117305
 BoxCollider2D:
@@ -770,7 +743,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248348583008}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -796,8 +769,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248348583014
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -972,7 +945,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248570064532}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -998,8 +971,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248570064554
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1053,7 +1026,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248627402847}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.85, y: -2.01, z: 0}
+  m_LocalPosition: {x: 15.89, y: -2.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1254,7 +1227,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248639730487}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1280,8 +1253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248639730485
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1403,7 +1376,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248699579779}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1429,8 +1402,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248699579777
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1583,7 +1556,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111248962569383}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1609,8 +1582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111248962569381
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1664,7 +1637,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111249160824357}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.33, y: -2.03, z: 0}
+  m_LocalPosition: {x: 4.82, y: -2.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1840,7 +1813,7 @@ GameObject:
   - component: {fileID: 6179002619535880882}
   m_Layer: 0
   m_Name: RangedEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1853,7 +1826,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111249448331272}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.53568, y: -1.5103011, z: 0}
+  m_LocalPosition: {x: 4.96, y: -1.5103011, z: 0}
   m_LocalScale: {x: 0.5776, y: 0.5589, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1952,7 +1925,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -1973,8 +1946,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b39af2c60f350240869b35585fe956f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 1
-  range: 5
+  attackCooldown: 0.5
+  range: 10
   damage: 10
   firepoint: {fileID: 2319111248718436313}
   fireballs:
@@ -1988,7 +1961,7 @@ MonoBehaviour:
   - {fileID: 2319111248138780276}
   - {fileID: 2319111248570064532}
   - {fileID: 2319111248330117307}
-  colliderDistance: 0.7
+  colliderDistance: 0.85
   boxCollider: {fileID: 6179002619535880881}
   playerLayer:
     serializedVersion: 2
@@ -2088,7 +2061,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2319111249539066886}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -2114,8 +2087,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  resetTime: 5
+  speed: 10
+  resetTime: 2
 --- !u!61 &2319111249539066884
 BoxCollider2D:
   m_ObjectHideFlags: 0

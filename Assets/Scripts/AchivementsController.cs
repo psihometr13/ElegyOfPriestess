@@ -34,7 +34,7 @@ public class AchivementsController : MonoBehaviour
     //1) More than 20 deaths since last save
     void Check20Deaths()
     {
-        if (PlayerControl.Instance.countOfDeaths > 20)
+        if (SaveSystem.GetInt("countOfDeaths") > 20)
         {
             imgCHB[0].SetActive(false);
             imgColor[0].SetActive(true);
@@ -44,7 +44,7 @@ public class AchivementsController : MonoBehaviour
     //2) Complete the chapter without dying
     void CheckChapterDying()
     {
-        if (PlayerControl.Instance.countOfDeaths == 0)
+        if (SaveSystem.GetInt("countOfDeaths") == 0)
         {
             imgCHB[1].SetActive(false);
             imgColor[1].SetActive(true);
@@ -54,7 +54,7 @@ public class AchivementsController : MonoBehaviour
     //3) Collect all the notes
     void CheckNotes()
     {
-        if (PlayerControl.Instance.countOfNotes == allNotes)
+        if (SaveSystem.GetInt("countOfNotes") == allNotes)
         {
             imgCHB[2].SetActive(false);
             imgColor[2].SetActive(true);
@@ -64,7 +64,7 @@ public class AchivementsController : MonoBehaviour
     //4) Kill all the bosses
     void CheckKilledBosses()
     {
-        if (PlayerControl.Instance.countOfKilledBosses == allBosses)
+        if (SaveSystem.GetInt("countOfKilledBosses") == allBosses)
         {
             imgCHB[3].SetActive(false);
             imgColor[3].SetActive(true);
@@ -74,7 +74,7 @@ public class AchivementsController : MonoBehaviour
     //5) Visit all the closed locations
     void CheckLocations()
     {
-        if (PlayerControl.Instance.countOfVisitedLoc == allClosedLocations)
+        if (SaveSystem.GetInt("countOfVisitedLoc") == allClosedLocations)
         {
             imgCHB[4].SetActive(false);
             imgColor[4].SetActive(true);
@@ -84,7 +84,7 @@ public class AchivementsController : MonoBehaviour
     //6) Complete the boss without using a heal
     void CheckBossHeals()
     {
-        if (PlayerControl.Instance.countOfUsedHeals == 0)
+        if (SaveSystem.GetInt("countOfUsedHeals") == 0)
         {
             imgCHB[5].SetActive(false);
             imgColor[5].SetActive(true);
@@ -94,7 +94,7 @@ public class AchivementsController : MonoBehaviour
     //7) Use all types of magic in one fight
     void CheckMagic()
     {
-        if (PlayerControl.Instance.countOfMagic == allMagicTypes)
+        if (SaveSystem.GetInt("countOfMagic") == allMagicTypes)
         {
             imgCHB[6].SetActive(false);
             imgColor[6].SetActive(true);
@@ -104,7 +104,7 @@ public class AchivementsController : MonoBehaviour
     //8) Collect all the secret chests
     void CheckChests()
     {
-        if (PlayerControl.Instance.countOfChests == allSecretChests)
+        if (SaveSystem.GetInt("countOfChests") == allSecretChests)
         {
             imgCHB[7].SetActive(false);
             imgColor[7].SetActive(true);

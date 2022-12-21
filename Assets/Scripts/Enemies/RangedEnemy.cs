@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class RangedEnemy : MonoBehaviour
@@ -19,7 +20,7 @@ public class RangedEnemy : MonoBehaviour
 
     [Header("Player Layer")]
     [SerializeField] private LayerMask playerLayer;
-    private float cooldownTimer = Mathf.Infinity;
+    private float cooldownTimer = 0;
 
     //References
     //private Animator anim;
@@ -43,7 +44,7 @@ public class RangedEnemy : MonoBehaviour
             {
                 cooldownTimer = 0;
                 //anim.SetTrigger("rangedAttack");
-
+                //RangedAttack();
                 if (playerHealth) RangedAttack();
             }
         }
@@ -51,6 +52,15 @@ public class RangedEnemy : MonoBehaviour
         if (enemyPatrol != null)
             enemyPatrol.enabled = !PlayerInSight();
     }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision.collider != null)
+    //    {
+    //        Debug.Log(collision.transform.tag);
+    //        playerHealth = collision.transform.GetComponent<PlayerControl>();
+    //    }
+    //}
 
     private void RangedAttack()
     {
@@ -77,7 +87,10 @@ public class RangedEnemy : MonoBehaviour
             0, Vector2.left, 0, playerLayer);
 
         if (hit.collider != null)
+        {
+            //Debug.Log(hit.transform.tag);
             playerHealth = hit.transform.GetComponent<PlayerControl>();
+        }
 
         return hit.collider != null;
     }

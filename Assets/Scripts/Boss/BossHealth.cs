@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour
 {
-    public int health = 500;
+    public float health = 500;
 
     public GameObject deathEffect;
 
@@ -14,13 +14,13 @@ public class BossHealth : MonoBehaviour
 
     private void Update()
     {
-        if (health <= 200)
+        if (health <= 100)
         {
             GetComponent<Animator>().SetBool("IsEnraged", true);
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (isInvulnerable)
             return;

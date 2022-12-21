@@ -6,7 +6,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] private float startingHealth;
-    public float currentHealth { get; private set; }
+    [SerializeField] public float currentHealth { get; private set; }
     //private Animator anim;
     private bool dead;
 
@@ -30,11 +30,6 @@ public class EnemyHealth : MonoBehaviour
         enemyRef = Resources.Load(gameObject.tag);
     }
 
-    private void FixedUpdate()
-    {
-        TakeDamage(20 * Time.deltaTime);
-    }
-
     private void Awake()
     {
         currentHealth = startingHealth;
@@ -46,6 +41,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (invulnerable) return;
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
+        Debug.Log(currentHealth);
         if (currentHealth > 0)
         {
             //anim.SetTrigger("hurt");

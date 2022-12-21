@@ -30,7 +30,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (hit) return;
         float movementSpeed = speed * Time.deltaTime;
-        transform.Translate(movementSpeed, 0, 0);
+        transform.Translate(movementSpeed * transform.parent.localScale.x, 0, 0);
 
         lifetime += Time.deltaTime;
         if (lifetime > resetTime)
@@ -39,10 +39,19 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.tag);
         hit = true;
         //OnTriggerEnter2D(coll); //Execute logic from parent script first
         coll.enabled = false;
         if (collision.gameObject.tag == "Player") DamagePlayer();
+        if (collision.gameObject.tag == "Enemy")
+        {
+            collision.transform.parent.GetComponent<EnemyHealth>().TakeDamage(damage);
+        }
+        if (collision.gameObject.tag == "Boss")
+        {
+            collision.gameObject.GetComponent<BossHealth>().TakeDamage(damage);
+        }
         Deactivate(); //When this hits any object deactivate arrow
         //if (anim != null)
         //    anim.SetTrigger("explode"); //When the object is a fireball explode it
@@ -55,6 +64,6 @@ public class EnemyProjectile : MonoBehaviour
 
     private void DamagePlayer()
     {
-            PlayerControl.Instance.DamagePlayer(damage);
+        PlayerControl.Instance.DamagePlayer(damage);
     }
 }
