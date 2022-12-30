@@ -28,7 +28,7 @@ public class PlayerControl : MonoBehaviour
 	public float jumpDistance = 2f; // відстань від центру об'єкта до поверхні
 	public bool facingRight = true; // в яку сторону дивиться
 	public KeyCode jumpButton = KeyCode.Space; // кнопка для стрибка
-	bool canJump = false;
+	//bool canJump = false;
 	public GameObject spawnPoint; //spawn
     private Vector3 direction;
 	public static Rigidbody2D rb;
@@ -101,8 +101,8 @@ public class PlayerControl : MonoBehaviour
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
 
-		//if (MenuController.Instance.newGame == false && File.Exists(Path.Combine(@"C:\Users\ПК\AppData\LocalLow\Dream\ElegyOfPriestess\", "Profile.bin")))
-		//	LoadGame();
+		if (MenuController.Instance.newGame == false && File.Exists(Path.Combine(@"C:\Users\ПК\AppData\LocalLow\Dream\ElegyOfPriestess\", "Profile.bin")))
+			LoadGame();
 
 	}
 

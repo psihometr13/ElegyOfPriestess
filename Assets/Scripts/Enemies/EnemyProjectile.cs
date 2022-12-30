@@ -41,20 +41,18 @@ public class EnemyProjectile : MonoBehaviour
     {
         Debug.Log(collision.gameObject.tag);
         hit = true;
-        //OnTriggerEnter2D(coll); //Execute logic from parent script first
         coll.enabled = false;
-        if (collision.gameObject.tag == "Player") DamagePlayer();
+        if (collision.gameObject.tag == "Player")
+        {
+            DamagePlayer();
+            Debug.Log("Attack from Ranged Enemy!");
+        }
         if (collision.gameObject.tag == "Enemy")
-        {
-            collision.transform.parent.GetComponent<EnemyHealth>().TakeDamage(damage);
-        }
+            collision.transform.GetComponent<EnemyHealth>().TakeDamage(damage);
         if (collision.gameObject.tag == "Boss")
-        {
             collision.gameObject.GetComponent<BossHealth>().TakeDamage(damage);
-        }
+
         Deactivate(); //When this hits any object deactivate arrow
-        //if (anim != null)
-        //    anim.SetTrigger("explode"); //When the object is a fireball explode it
     }
 
     private void Deactivate()

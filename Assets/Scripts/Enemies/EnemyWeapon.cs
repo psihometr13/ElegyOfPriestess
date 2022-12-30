@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : MonoBehaviour
+public class EnemyWeapon : MonoBehaviour
 {
     [Header("Attack Parameters")]
     [SerializeField] private int attackDamage = 10;
     [SerializeField] public Vector3 attackOffset;
     [SerializeField] public float attackRange = 1f;
+
+    [Header("Ranged Attack")]
+    [SerializeField] public Transform firepoint;
+    [SerializeField] private GameObject[] fireballs;
 
     [Header("Collider Parameters")]
     [SerializeField] private float colliderDistance;
@@ -21,6 +25,22 @@ public class MeleeEnemy : MonoBehaviour
         Vector3 pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
+    }
+
+    private void RangedAttack()
+    {
+        fireballs[FindFireball()].transform.position = firepoint.position;
+        fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+    }
+
+    private int FindFireball()
+    {
+        for (int i = 0; i < fireballs.Length; i++)
+        {
+            if (!fireballs[i].activeInHierarchy)
+                return i;
+        }
+        return 0;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
