@@ -62,6 +62,6 @@ public class EnemyProjectile : MonoBehaviour
 
     private void DamagePlayer()
     {
-        PlayerControl.Instance.DamagePlayer(damage);
+        Upd_PlayerControl.Instance.DamagePlayer(damage);
     }
 }

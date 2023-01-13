@@ -15,6 +15,6 @@ public class IntroController : MonoBehaviour
     IEnumerator WaitForLevel()
     {
         yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

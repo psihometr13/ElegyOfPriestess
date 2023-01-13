@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class EnergyBar : MonoBehaviour
 {
     public Slider energyBar;
+    public Upd_PlayerControl playerEnergy;
 
     private void Start()
     {
+        playerEnergy = GameObject.FindGameObjectWithTag("Player").GetComponent<Upd_PlayerControl>();
         energyBar = GetComponent<Slider>();
-        energyBar.maxValue = PlayerControl.Instance.maxEnergy;
-        energyBar.value = PlayerControl.Instance.maxEnergy;
+        energyBar.maxValue = playerEnergy.maxEnergy;
+        energyBar.value = playerEnergy.maxEnergy;
     }
 
     public void SetEnergy(float energyPoints)

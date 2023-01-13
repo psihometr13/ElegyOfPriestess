@@ -52,6 +52,7 @@ public class Enemy_Patrol : StateMachineBehaviour
         }
         else
         {
+            Debug.Log(enemy);
             if (enemy.transform.position.x <= rightEdge.x)
                 MoveInDirection(1);
             else

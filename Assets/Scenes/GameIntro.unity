@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23c2cfb571aad5438dafa8e6dae84b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 10
+  waitTime: 63
 --- !u!1 &1128447376
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128447376}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 4fcaafa980e269f468edc2eda585004b, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 554f22efb281e4945ac9227e2b6465a6, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1098941116}

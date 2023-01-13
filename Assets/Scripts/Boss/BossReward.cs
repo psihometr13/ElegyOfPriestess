@@ -8,7 +8,7 @@ public class BossReward : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            PlayerControl.Instance.AddExp(10);
+            Upd_PlayerControl.Instance.AddExp(10);
             Destroy(gameObject);
         }
     }
