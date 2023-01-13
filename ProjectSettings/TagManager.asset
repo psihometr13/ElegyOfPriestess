@@ -7,20 +7,13 @@ TagManager:
   - Ladder
   - Ground
   - DeadZone
+  - Enemy
   - Spike
   - Blade
   - NPC
-  - PatrolPoint
-  - Boss
-  - MeleeEnemy
-  - RangedEnemy
-  - Enemy
-  - Menu
-  - Rosary
-  - Blindfold
-  - Bathilda's-ring
-  - Stick
-  - DialogPoint
+  - Teleporter
+  - CamTP
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -29,7 +22,7 @@ TagManager:
   - Water
   - UI
   - Mini-map
-  - 
+  - Ground
   - 
   - 
   - 

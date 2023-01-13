@@ -9,9 +9,9 @@ public class EnemyWeapon : MonoBehaviour
     [SerializeField] public Vector3 attackOffset;
     [SerializeField] public float attackRange = 1f;
 
-    [Header("Ranged Attack")]
-    [SerializeField] public Transform firepoint;
-    [SerializeField] private GameObject[] fireballs;
+    //[Header("Ranged Attack")]
+    //[SerializeField] public Transform firepoint;
+    //[SerializeField] private GameObject[] fireballs;
 
     [Header("Collider Parameters")]
     [SerializeField] private float colliderDistance;
@@ -20,6 +20,17 @@ public class EnemyWeapon : MonoBehaviour
     [Header("Player Layer")]
     public LayerMask attackMask;
 
+    [Header("Idle Behaviour")]
+    [SerializeField] private float attackCooldown; //перезарядка атаки
+    private float cooldownTimer = 0;
+
+    Animator animator;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     public void Attack()
     {
         Vector3 pos = transform.position;
@@ -27,30 +38,40 @@ public class EnemyWeapon : MonoBehaviour
         pos += transform.up * attackOffset.y;
     }
 
-    private void RangedAttack()
+    //private void RangedAttack()
+    //{
+    //    fireballs[FindFireball()].transform.position = firepoint.position;
+    //    fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+    //}
+
+    //private int FindFireball()
+    //{
+    //    for (int i = 0; i < fireballs.Length; i++)
+    //    {
+    //        if (!fireballs[i].activeInHierarchy)
+    //            return i;
+    //    }
+    //    return 0;
+    //}
+
+    public void Update()
     {
-        fireballs[FindFireball()].transform.position = firepoint.position;
-        fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+        cooldownTimer += Time.deltaTime;
     }
 
-    private int FindFireball()
-    {
-        for (int i = 0; i < fireballs.Length; i++)
-        {
-            if (!fireballs[i].activeInHierarchy)
-                return i;
-        }
-        return 0;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision != null)
         {
             if (collision.gameObject.tag == "Player")
             {
-                PlayerControl.Instance.DamagePlayer(attackDamage);
-                Debug.Log("Attack from Melee Enemy!");
+                if (cooldownTimer >= attackCooldown)
+                {
+                    animator.SetTrigger("Attack");
+                    Upd_PlayerControl.Instance.DamagePlayer(attackDamage);
+                    cooldownTimer = 0;
+                    Debug.Log("Attack from Melee Enemy!");
+                }
             }
         }
     }

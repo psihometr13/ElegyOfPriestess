@@ -6,7 +6,7 @@ public class ElevatorController : MonoBehaviour
 {
     public float speed = 0.5f; //швидк≥сть
     public Transform bottomPoint = null, topPoint = null; //початкова ≥ к≥нцева зупинка
-
+    
     private bool isMovingDown = true;
 
     void CheckPosition()
@@ -15,39 +15,42 @@ public class ElevatorController : MonoBehaviour
         {
             isMovingDown = false;
         }
-        else if (transform.position.y > topPoint.position.y)
+        else if (transform.position.y >= topPoint.position.y)
         {
             isMovingDown = true;
         }
+        //Debug.Log(isMovingDown);
+
     }
 
     void Update()
     {
         CheckPosition();
-    }
-
-    private void FixedUpdate()
-    {
         if (isMovingDown == true)
         {
-            if (bottomPoint != null)
-            {
+
                 if (transform.position != bottomPoint.position)
                 {
                     transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, (float)(bottomPoint.position.y)), speed * Time.deltaTime);
                 }
-            }
         }
         else
         {
-            if (topPoint != null)
+        if (isMovingDown == false)
             {
-                if (transform.position != topPoint.position)
+             if (transform.position != topPoint.position)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, topPoint.position.y), speed * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, (float)(topPoint.position.y)), speed * Time.deltaTime);
+                    
                 }
             }
         }
+        
+    }
+
+    private void FixedUpdate()
+    {
+
     }
 
     //робимо гравц€ доч≥рн≥м об'Їктом платформи, коли рухаЇмос€
