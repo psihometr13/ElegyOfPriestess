@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraCont : MonoBehaviour
 {
-    public bool check=false;
+    public bool check = false;
     public string name;
     public static CameraCont Instance { get; private set; }
 
@@ -26,7 +26,7 @@ public class CameraCont : MonoBehaviour
         {
             name = collision.gameObject.name;
             check = true;
-            
+
         }
 
     }
@@ -37,7 +37,7 @@ public class CameraCont : MonoBehaviour
             if (collision.gameObject == check)
             {
                 check = false;
-               
+
             }
         }
 

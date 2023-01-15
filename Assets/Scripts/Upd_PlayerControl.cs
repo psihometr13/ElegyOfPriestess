@@ -22,6 +22,9 @@ public class Upd_PlayerControl : MonoBehaviour
 	public KeyCode jumpButton = KeyCode.Space; // кнопка для стрибка
 	public GameObject spawnPoint; //spawn
 
+    [SerializeField] List<GameObject> rooms;
+	public int currentRoom;
+
 	private Vector3 direction;
 	public static Rigidbody2D body;
 	public static CapsuleCollider2D capsuleCollider;
@@ -74,11 +77,11 @@ public class Upd_PlayerControl : MonoBehaviour
 	[SerializeField] private int damage;
 
 
-	private Animator _anim;
-	private Animator _anim2;
+	public Animator _anim;
+    public Animator _anim2;
 	public LayerMask groundMask;
 	private bool grounded;
-	private bool IsMoving;
+	public bool IsMoving;
 	public float distanceToGround = 3;
 	void Start()
 	{
@@ -102,8 +105,6 @@ public class Upd_PlayerControl : MonoBehaviour
             Instance = this;
         }
     }
-
-
 
     void FixedUpdate()
 	{
@@ -212,30 +213,17 @@ public class Upd_PlayerControl : MonoBehaviour
 		//if (h > 0 && !facingRight) Flip(); else if (h < 0 && facingRight) Flip();
 		//healthBar.SetHealth(curHealth);
 	}
-	
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "currentRooom")
+        {
+            currentRoom = rooms.IndexOf(collision.gameObject);
+           // UnityEngine.Debug.Log(currentRoom);
+        }
+    }
 
-	//public void CameraEnter2D(Collider2D collision)
-	//{
-	//	if (collision.CompareTag("CamTP"))
-	//	{
-	//		check = true;
-	//	}
-
-	//}
-	//public void CameraExit2D(Collider2D collision)
-	//{
-	//	if (collision.CompareTag("CamTP"))
-	//	{
-	//		if (collision.gameObject == check)
-	//		{
-	//			check = false;
-	//		}
-	//	}
-
-	//}
-
-	private bool IsFlying()
+    private bool IsFlying()
 	{
 		if (body.velocity.y < 0 && grounded== false)
 		{
@@ -305,19 +293,24 @@ public class Upd_PlayerControl : MonoBehaviour
 		curExp += exp;
 	}
 
+    public void HelpPontiff()
+    {
+        isPontiffHelped = true;
+    }
 
-	//private void OnCollisionEnter2D(Collision2D collision)
-	//{
-	//       if (collision.gameObject.tag == "Spike")
-	//       {
-	//           DamagePlayer(25);
-	//           UnityEngine.Debug.Log("Damage from spike!");
-	//       }
-	//       if (collision.gameObject.tag == "Blade")
-	//       {
-	//           DamagePlayer(25);
-	//           UnityEngine.Debug.Log("Damage from blade!");
-	//       }
-	//   }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //       if (collision.gameObject.tag == "Spike")
+    //       {
+    //           DamagePlayer(25);
+    //           UnityEngine.Debug.Log("Damage from spike!");
+    //       }
+    //       if (collision.gameObject.tag == "Blade")
+    //       {
+    //           DamagePlayer(25);
+    //           UnityEngine.Debug.Log("Damage from blade!");
+    //       }
+    //   }
 
 }

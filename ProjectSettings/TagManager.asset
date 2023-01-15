@@ -14,6 +14,12 @@ TagManager:
   - Teleporter
   - CamTP
   - Weapon
+  - MeleeEnemy
+  - RangedEnemy
+  - Rosary
+  - Blindfold
+  - currentRooom
+  - note
   layers:
   - Default
   - TransparentFX

@@ -728,17 +728,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Use all types of magic in one fight
 --- !u!1 &168385546
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,7 +842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.99999, y: -74.99999}
+  m_AnchoredPosition: {x: 74.99982, y: -74.99999}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &197497270
@@ -1169,17 +1161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: More than 20 deaths since last save
 --- !u!1 &279696007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3047,7 +3031,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77375ed0ae540684399c7c56a04eb060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: 
+  imgColor:
+  - {fileID: 197497268}
+  - {fileID: 2109360627}
+  - {fileID: 279696007}
+  - {fileID: 168385546}
+  - {fileID: 1836317923}
+  - {fileID: 454774945}
+  - {fileID: 864730900}
+  - {fileID: 418661532}
+  imgCHB:
+  - {fileID: 1191048327}
+  - {fileID: 1359378325}
+  - {fileID: 900936802}
+  - {fileID: 676441486}
+  - {fileID: 1921654288}
+  - {fileID: 557304360}
+  - {fileID: 588460199}
+  - {fileID: 1222318675}
 --- !u!1 &712800419
 GameObject:
   m_ObjectHideFlags: 0
@@ -3414,17 +3415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Visit all the closed locations
 --- !u!1 &759648364
 GameObject:
   m_ObjectHideFlags: 0
@@ -4116,17 +4109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Complete the chapter without dying
 --- !u!1 &880505924
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,17 +5209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Collect all the secret chests
 --- !u!1 &1106999906
 GameObject:
   m_ObjectHideFlags: 0
@@ -6269,17 +6246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Collect all the notes
 --- !u!1 &1359378325
 GameObject:
   m_ObjectHideFlags: 0
@@ -13194,17 +13163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Kill all the bosses
 --- !u!1 &2061186605
 GameObject:
   m_ObjectHideFlags: 0
@@ -13369,17 +13330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f1dca4b6992b4fbf7b6113d6410c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  tooltipMode: 0
-  fontSize: 14
-  maxWidth: 250
-  border: 10
-  box: {fileID: 0}
-  arrow: {fileID: 0}
-  boxText: {fileID: 0}
-  _camera: {fileID: 0}
-  speed: 10
+  go: {fileID: 515255366}
+  tooltipText: {fileID: 420005691}
+  txt: Kill the boss without using a heal
 --- !u!1 &2109360627
 GameObject:
   m_ObjectHideFlags: 0
@@ -13415,7 +13368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.99999, y: -74.99999}
+  m_AnchoredPosition: {x: 75.00006, y: -74.99999}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2109360629

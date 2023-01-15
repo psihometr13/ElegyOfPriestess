@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FallCheck : MonoBehaviour
 {
-    public float fallDistance = -30;
+    public float fallDistance = -10;
     public float fallDamage = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)

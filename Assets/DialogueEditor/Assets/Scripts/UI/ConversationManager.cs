@@ -145,6 +145,9 @@ namespace DialogueEditor
 
         public void StartConversation(NPCConversation conversation)
         {
+            Upd_PlayerControl.Instance.speed = 0;
+            Upd_PlayerControl.Instance._anim.enabled = false;
+            Upd_PlayerControl.Instance._anim2.enabled = false;
             m_conversation = conversation.Deserialize();
             if (OnConversationStarted != null)
                 OnConversationStarted.Invoke();
@@ -160,6 +163,9 @@ namespace DialogueEditor
 
             if (OnConversationEnded != null)
                 OnConversationEnded.Invoke();
+            Upd_PlayerControl.Instance.speed = 6;
+            Upd_PlayerControl.Instance._anim.enabled = true;
+            Upd_PlayerControl.Instance._anim2.enabled = true;
         }
 
         public void SelectNextOption()
