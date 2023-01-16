@@ -3,32 +3,38 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using System.Threading;
+using Unity.VisualScripting;
+
 [RequireComponent(typeof(Rigidbody2D))]
 
 public class Upd_PlayerControl : MonoBehaviour
 {
 	//private Animations _animations;
 	//private bool _isMoving;
-	
+
 	[SerializeField] private SpriteRenderer _spriteRenderer;
-    public static Upd_PlayerControl Instance { get; private set; }
-    //Move
-    public float speed = 5; // швидкість руху
+	public static Upd_PlayerControl Instance { get; private set; }
+	//Move
+	public float speed = 5; // швидкість руху
 	public float acceleration = 1; // прискорення
 	public float runSpeed = 1; // run
 	public float jumpForce = 15; // сила стрибка
 	public float jumpDistance = 0.75f; // відстань від центру об'єкта до поверхні
-	public bool facingRight = true; // в яку сторону дивиться
+	public bool facingRight = false; // в яку сторону дивиться
 	public KeyCode jumpButton = KeyCode.Space; // кнопка для стрибка
 	public GameObject spawnPoint; //spawn
 
-    [SerializeField] List<GameObject> rooms;
+	public Transform checkPosition;
+	public Vector2 checkSize;
+	public LayerMask Ground;
+
+	[SerializeField] List<GameObject> rooms;
 	public int currentRoom;
 
 	private Vector3 direction;
 	public static Rigidbody2D body;
 	public static CapsuleCollider2D capsuleCollider;
-	
+
 
 	//Health
 	[Header("Health Parameters")]
@@ -66,7 +72,7 @@ public class Upd_PlayerControl : MonoBehaviour
 	//Attack
 	[Header("Attack Parameters")]
 	[SerializeField] private float colliderDistance;
-	[SerializeField] private BoxCollider2D boxCollider;
+	[SerializeField] private CapsuleCollider2D boxCollider;
 	private float cooldownTimer = 0;
 
 	[SerializeField] public Transform firepoint;
@@ -78,7 +84,7 @@ public class Upd_PlayerControl : MonoBehaviour
 
 
 	public Animator _anim;
-    public Animator _anim2;
+	public Animator _anim2;
 	public LayerMask groundMask;
 	private bool grounded;
 	public bool IsMoving;
@@ -93,19 +99,24 @@ public class Upd_PlayerControl : MonoBehaviour
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
 	}
-    private void Awake()
+	private void Awake()
+	{
+		// If there is an instance, and it's not me, delete myself.
+		if (Instance != null && Instance != this)
+		{
+			Destroy(this);
+		}
+		else
+		{
+			Instance = this;
+		}
+	}
+    IEnumerator MoveAfterAttack()
     {
-        // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
+        yield return new WaitForSeconds(1f);
+        speed = 6;
 
+    }
     void FixedUpdate()
 	{
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
@@ -117,11 +128,11 @@ public class Upd_PlayerControl : MonoBehaviour
 			//_animations.IsMoving = _isMoving;
 			_anim.SetBool("IsMoving", true);
 
-            _anim.SetBool("Run", false);
-        }
-        else
+			_anim.SetBool("Run", false);
+		}
+		else
 		{
-			IsMoving=false;
+			IsMoving = false;
 			_anim.SetBool("IsMoving", false);
 		}
 
@@ -129,25 +140,33 @@ public class Upd_PlayerControl : MonoBehaviour
 		{
 			_anim.SetBool("Run", true);
 			Run();
-		}else _anim.SetBool("Run", false);
+		}
+		else _anim.SetBool("Run", false);
 
-
-
-		if (Mathf.Abs(body.velocity.x) > speed )
+		if (Mathf.Abs(body.velocity.x) > speed)
 		{
 			body.velocity = new Vector2(Mathf.Sign(body.velocity.x) * speed, body.velocity.y);
 		}
-	}
+       
+        if (Input.GetKey(KeyCode.Q))
+        {
+            speed = 0;
+            _anim.SetTrigger("Heal");
+            StartCoroutine("MoveAfterAttack");
+        }
+    }
 	private void Run()
-	{       
+	{
 
-        body.AddForce(direction * body.mass * speed * acceleration * runSpeed);
-		
+		body.AddForce(direction * body.mass * speed * acceleration * runSpeed);
+
 	}
 	private void GetJump() // перевірка чи є колайдер під ногами
 	{
-		grounded = Physics2D.Raycast(body.position, Vector3.down, distanceToGround,
-					 groundMask);
+		//grounded = Physics2D.Raycast(body.position, Vector3.down, distanceToGround,
+		//			 groundMask);
+		grounded = Physics2D.OverlapBox(checkPosition.position, checkSize, 0, Ground);
+
 	}
 	private void Move()
 	{
@@ -172,27 +191,53 @@ public class Upd_PlayerControl : MonoBehaviour
 	private void Jump()
 	{
 		_anim.SetTrigger("Jump");
-		
+
 		body.velocity = new Vector2(0, jumpForce);
 	}
-	
+
 	void Update()
 	{
 		RestoreHealth();
 		RestoreEnergy();
 		healthBar.SetHealth(curHealth);
 		energyBar.SetEnergy(curEnergy);
-		
+
 		//Debug.DrawRay(transform.position, Vector3.down * jumpDistance, Color.red); // підсвітка, для візуального налаштування jumpDistance
 		GetJump();
 		if (Input.GetKeyDown(jumpButton) && grounded)
-        {			
+		{
 			Jump();
-			
+
 		}
+
 		IsFlying();
 
+        cooldownTimer += Time.deltaTime;
 
+        if (Input.GetKey(KeyCode.Alpha7))
+        {
+            speed = 0;
+            _anim.SetTrigger("Attack");
+            Attack(10);
+            StartCoroutine("MoveAfterAttack");
+        }
+        if (Input.GetKey(KeyCode.Alpha8))
+        {
+            speed = 0;
+            _anim.SetTrigger("Attack");
+            StartCoroutine("MoveAfterAttack");
+        }
+        if (Input.GetKey(KeyCode.Alpha9))
+        {
+            speed = 0;
+            _anim.SetTrigger("AttackLg");
+            StartCoroutine("MoveAfterAttack");
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+		{
+			SaveGame();
+		}
 
 		//if (Input.GetKeyDown(KeyCode.F) && grounded)
 		//      {
@@ -214,18 +259,53 @@ public class Upd_PlayerControl : MonoBehaviour
 		//healthBar.SetHealth(curHealth);
 	}
 
-    private void OnTriggerStay2D(Collider2D collision)
+    void Attack(int energy)
     {
-        if (collision.gameObject.tag == "currentRooom")
+        if (curEnergy >= energy && cooldownTimer >= attackCooldown)
         {
-            currentRoom = rooms.IndexOf(collision.gameObject);
-           // UnityEngine.Debug.Log(currentRoom);
+            UseEnergy(energy);
+            fireballs[FindFireball()].transform.position = firepoint.position;
+            fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+            cooldownTimer = 0;
+        }
+        //GameObject.FindGameObjectsWithTag("Boss")[0].GetComponent<BossHealth>().TakeDamage(energy);
+    }
+
+    private int FindFireball()
+    {
+        for (int i = 0; i < fireballs.Length; i++)
+        {
+            if (!fireballs[i].activeInHierarchy)
+                return i;
+        }
+        return 0;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+	{
+		if (collision.gameObject.tag == "currentRooom")
+		{
+			currentRoom = rooms.IndexOf(collision.gameObject);
+			// UnityEngine.Debug.Log(currentRoom);
+		}
+
+        float damagePerSecond = 20;
+
+        if (collision.gameObject.tag == "Spike")
+        {
+            DamagePlayer(damagePerSecond * Time.deltaTime);
+            UnityEngine.Debug.Log("Damage from spike!");
+        }
+        if (collision.gameObject.tag == "Blade")
+        {
+            DamagePlayer(damagePerSecond * Time.deltaTime);
+            UnityEngine.Debug.Log("Damage from blade!");
         }
     }
 
-    private bool IsFlying()
+	private bool IsFlying()
 	{
-		if (body.velocity.y < 0 && grounded== false)
+		if (body.velocity.y < 0 && grounded == false)
 		{
 			_anim.SetBool("IsFlying", true);
 			//_anim.SetBool("Run", false);
@@ -244,6 +324,7 @@ public class Upd_PlayerControl : MonoBehaviour
 		if (curHealth > 0 && curHealth >= damage)
 		{
 			curHealth -= damage;
+			_anim.SetTrigger("Hit");
 		}
 		else
 		{
@@ -293,24 +374,64 @@ public class Upd_PlayerControl : MonoBehaviour
 		curExp += exp;
 	}
 
-    public void HelpPontiff()
-    {
-        isPontiffHelped = true;
-    }
+	public void HelpPontiff()
+	{
+		isPontiffHelped = true;
+	}
 
+	void SaveGame()
+	{
+		////General
+		//SaveSystem.SetVector2("PlayerPosition", transform.position);
+		//SaveSystem.SetFloat("CurrentHealth", curHealth);
+		//SaveSystem.SetFloat("CurrentEnergy", curEnergy);
+		//SaveSystem.SetFloat("CurrentExp", curExp);
+		//SaveSystem.SetFloat("MaxDamage", maxDamage);
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //       if (collision.gameObject.tag == "Spike")
-    //       {
-    //           DamagePlayer(25);
-    //           UnityEngine.Debug.Log("Damage from spike!");
-    //       }
-    //       if (collision.gameObject.tag == "Blade")
-    //       {
-    //           DamagePlayer(25);
-    //           UnityEngine.Debug.Log("Damage from blade!");
-    //       }
-    //   }
+		//Achimenents
+		SaveSystem.SetInt("countOfDeaths", countOfDeaths);
+		SaveSystem.SetInt("countOfNotes", countOfNotes);
+		SaveSystem.SetInt("countOfKilledBosses", countOfKilledBosses);
+		SaveSystem.SetInt("countOfVisitedLoc", countOfVisitedLoc);
+		SaveSystem.SetInt("countOfUsedHeals", countOfUsedHeals);
+		SaveSystem.SetInt("countOfMagic", countOfMagic);
+		SaveSystem.SetInt("countOfChests", countOfChests);
+
+		SaveSystem.SaveToDisk();
+	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.tag == "DeadZone")
+		{
+			DiePlayer();
+		}
+		if (collision.gameObject.tag == "Blade")
+		{
+			DamagePlayer(25);
+			UnityEngine.Debug.Log("Damage from blade!");
+		}
+
+		if (collision.gameObject.tag == "Rosary")
+		{
+			UnityEngine.Debug.Log("Rosary used");
+			maxHealth = maxHealth * 1.25f;
+			Destroy(collision.gameObject);
+		}
+
+		if (collision.gameObject.tag == "Blindfold")
+		{
+			UnityEngine.Debug.Log("Blindfold used");
+			maxDamage = maxDamage * 115 / 100;
+			Destroy(collision.gameObject);
+		}
+
+		if (collision.gameObject.tag == "Bathilda's-ring")
+		{
+			UnityEngine.Debug.Log("Bathilda's ring used");
+			maxEnergy = maxEnergy * 1.25f;
+			Destroy(collision.gameObject);
+		}
+	}
 
 }

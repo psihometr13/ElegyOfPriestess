@@ -20,6 +20,10 @@ TagManager:
   - Blindfold
   - currentRooom
   - note
+  - Menu
+  - Fireball
+  - heal
+  - energy
   layers:
   - Default
   - TransparentFX

@@ -41,5 +41,8 @@ public class ChangeSprite : MonoBehaviour
         }
 
     }
-
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        check = false;
+    }
 }

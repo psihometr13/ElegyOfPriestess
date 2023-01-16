@@ -11,7 +11,7 @@ public class Enemy_Run : StateMachineBehaviour
 
     Transform player;
     Rigidbody2D rb;
-    Enemy enemy;
+    Enemy_ enemy;
 
     private Vector3 initScale;
 
@@ -23,7 +23,7 @@ public class Enemy_Run : StateMachineBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = animator.GetComponent<Rigidbody2D>();
-        enemy = animator.GetComponent<Enemy>();
+        enemy = animator.GetComponent<Enemy_>();
         initScale = enemy.transform.localScale;
     }
 

@@ -15,7 +15,7 @@ public class Enemy_Patrol : StateMachineBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float patrolDistanse;
     private Vector3 initScale;
-    private bool movingLeft;
+    private bool movingLeft = true;
 
     [SerializeField] private float stoppingDistance; //відстань початку погоні
 
@@ -39,8 +39,9 @@ public class Enemy_Patrol : StateMachineBehaviour
     {
         if (movingLeft)
         {
+            Debug.Log(leftEdge.x);
             if (enemy.transform.position.x >= leftEdge.x)
-                MoveInDirection(-1);
+                MoveInDirection(1);
             else
             {
                 idleTimer += Time.deltaTime;
@@ -52,9 +53,8 @@ public class Enemy_Patrol : StateMachineBehaviour
         }
         else
         {
-            Debug.Log(enemy);
             if (enemy.transform.position.x <= rightEdge.x)
-                MoveInDirection(1);
+                MoveInDirection(-1);
             else
             {
                 idleTimer += Time.deltaTime;
@@ -78,7 +78,7 @@ public class Enemy_Patrol : StateMachineBehaviour
             initScale.y, initScale.z);
 
         //Move in that direction
-        enemy.transform.position = new Vector3(enemy.transform.position.x + Time.deltaTime * _direction * speed,
+        enemy.transform.position = new Vector3(enemy.transform.position.x + Time.deltaTime * _direction * -speed,
             enemy.transform.position.y, enemy.transform.position.z);
     }
 

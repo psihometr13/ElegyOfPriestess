@@ -23,7 +23,6 @@ public class NotesController : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(check);
         if (check == true)
         {
             if (Input.GetKeyDown(KeyCode.F))
@@ -34,6 +33,7 @@ public class NotesController : MonoBehaviour
                 image.enabled = true;
                 text.enabled = true;
                 text.text = noteText;
+                check = true;
             }
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -54,5 +54,10 @@ public class NotesController : MonoBehaviour
             check = true;
             note = collision.gameObject;
         }
+        //else check = false;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        check = false;
     }
 }

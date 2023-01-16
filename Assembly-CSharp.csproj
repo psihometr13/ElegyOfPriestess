@@ -56,22 +56,29 @@
     <Analyzer Include="D:\visual\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\PlayVideoController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Enemy2\MeelyEnemyContrl.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\ConversationNode.cs" />
     <Compile Include="Assets\Scripts\Boss\BossReward.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Dead.cs" />
     <Compile Include="Assets\Scripts\SettingsController.cs" />
     <Compile Include="Assets\Scripts\AchivementsController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Conversation.cs" />
     <Compile Include="Assets\Scripts\Boss\Boss_Enrage.cs" />
     <Compile Include="Assets\Scripts\BladeController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\StateMachine.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableConversation.cs" />
     <Compile Include="Assets\Scripts\ElevatorController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableSetParamAction.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\BaseState.cs" />
     <Compile Include="Assets\Scripts\cammera.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy_Run.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\UI\ConversationManager.cs" />
+    <Compile Include="Assets\Scripts\BookShelf.cs" />
     <Compile Include="Assets\SaveGame\Scripts\TestSaveGame.cs" />
     <Compile Include="Assets\Scripts\DialogManager.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy_Patrol.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Idle.cs" />
     <Compile Include="Assets\Scripts\Animations.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyFireballHolder.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
@@ -80,6 +87,7 @@
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableCondition.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\EnemyData.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyHealth.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Condition.cs" />
     <Compile Include="Assets\Scripts\Upd_PlayerControl.cs" />
@@ -88,11 +96,15 @@
     <Compile Include="Assets\Scripts\HintCotroller.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\DialogController.cs" />
+    <Compile Include="Assets\Scripts\ItemsPickUp.cs" />
     <Compile Include="Assets\SaveGame\Scripts\SaveSystemSetup.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Parameter.cs" />
+    <Compile Include="Assets\Scripts\MenuNotesController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableNode.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\NotesController.cs" />
-    <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Enemy2\EnemyPatruling.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Enemy_.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Ground.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableConnection.cs" />
     <Compile Include="Assets\Scripts\IntroController.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\SetParamAction.cs" />
@@ -102,16 +114,20 @@
     <Compile Include="Assets\Scripts\PlayerTeleporter.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableParameter.cs" />
     <Compile Include="Assets\Scripts\FallCheck.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Hit.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\LongAttack.cs" />
     <Compile Include="Assets\Scripts\PlayerContWepon.cs" />
     <Compile Include="Assets\Scripts\ChangeSprite.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyProjectile.cs" />
     <Compile Include="Assets\Scripts\TeleportSystem.cs" />
     <Compile Include="Assets\Scripts\CameraCont.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\SimpleAtack.cs" />
     <Compile Include="Assets\Scripts\Boss\Boss_Run.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\Connection.cs" />
     <Compile Include="Assets\SaveGame\Scripts\SaveSystem\SaveSystemData.cs" />
     <Compile Include="Assets\Scripts\PauseController.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Enemy.cs" />
     <Compile Include="Assets\Scripts\camChange.cs" />
     <Compile Include="Assets\Scripts\TooltipMenu.cs" />
     <Compile Include="Assets\DialogueEditor\Example\ExampleInputManager.cs" />
@@ -120,9 +136,6 @@
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Boss\Boss.cs" />
     <Compile Include="Assets\Scripts\LogoController.cs" />
-    <Compile Include="Assets\Scripts\MenuNotesController.cs" />
-    <Compile Include="Assets\Scripts\BookShelf.cs" />
-    <Compile Include="Assets\Scripts\PlayVideoController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

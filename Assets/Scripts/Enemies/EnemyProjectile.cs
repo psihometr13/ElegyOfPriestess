@@ -30,7 +30,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (hit) return;
         float movementSpeed = speed * Time.deltaTime;
-        transform.Translate(movementSpeed * transform.parent.localScale.x, 0, 0);
+        transform.Translate(-movementSpeed * transform.parent.localScale.x, 0, 0);
 
         lifetime += Time.deltaTime;
         if (lifetime > resetTime)
@@ -39,16 +39,15 @@ public class EnemyProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.tag);
         hit = true;
         coll.enabled = false;
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && gameObject.tag != "Fireball")
         {
             DamagePlayer();
             Debug.Log("Attack from Ranged Enemy!");
         }
-        if (collision.gameObject.tag == "Enemy")
-            collision.transform.GetComponent<EnemyHealth>().TakeDamage(damage);
+        if (collision.gameObject.tag == "MeleeEnemy")
+            collision.transform.GetComponent<Enemy>().TakeDamage(damage);
         if (collision.gameObject.tag == "Boss")
             collision.gameObject.GetComponent<BossHealth>().TakeDamage(damage);
 

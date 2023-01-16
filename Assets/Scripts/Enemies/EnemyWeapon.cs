@@ -7,7 +7,8 @@ public class EnemyWeapon : MonoBehaviour
     [Header("Attack Parameters")]
     [SerializeField] private int attackDamage = 10;
     [SerializeField] public Vector3 attackOffset;
-    [SerializeField] public float attackRange = 1f;
+    [SerializeField] public float attackRange = 4f;
+    //[SerializeField] public float fightRange = attackRange
 
     //[Header("Ranged Attack")]
     //[SerializeField] public Transform firepoint;
@@ -25,10 +26,20 @@ public class EnemyWeapon : MonoBehaviour
     private float cooldownTimer = 0;
 
     Animator animator;
+    Enemy_ enemy;
+    EnemyHealth enemyHealth;
+    float maxHealth;
+    Vector2 target;
+    Transform player;
+
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
+        enemy = animator.GetComponent<Enemy_>();
+        enemyHealth = animator.GetComponent<EnemyHealth>();
+        maxHealth = enemyHealth.startingHealth / 2;
     }
 
     public void Attack()
@@ -56,25 +67,43 @@ public class EnemyWeapon : MonoBehaviour
 
     public void Update()
     {
+        Debug.Log(gameObject.transform.position.y);
         cooldownTimer += Time.deltaTime;
-    }
+        enemy.LookAtPlayer();
+        target = new Vector2(player.transform.position.x, gameObject.transform.position.y);
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision != null)
+        if (cooldownTimer >= attackCooldown)
         {
-            if (collision.gameObject.tag == "Player")
+            if (Vector2.Distance(target, gameObject.transform.position) <= attackRange * 2)
             {
-                if (cooldownTimer >= attackCooldown)
+                cooldownTimer = 0;
+                if (enemyHealth.currentHealth <= maxHealth)
+                {
+                    animator.SetTrigger("strongAttack");
+                    Upd_PlayerControl.Instance.DamagePlayer(attackDamage * 2);
+                    Debug.Log("Attack from Melee Enemy!");
+                }
+                else
                 {
                     animator.SetTrigger("Attack");
                     Upd_PlayerControl.Instance.DamagePlayer(attackDamage);
-                    cooldownTimer = 0;
-                    Debug.Log("Attack from Melee Enemy!");
+                    Debug.Log("Strong Attack from Melee Enemy!");
                 }
             }
         }
+        else animator.SetBool("Idle", true);
     }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision != null)
+    //    {
+    //        if (collision.gameObject.tag == "Player")
+    //        {
+    //            check = true;
+    //        }
+    //    }
+    //}
 
     private void OnDrawGizmos()
     {

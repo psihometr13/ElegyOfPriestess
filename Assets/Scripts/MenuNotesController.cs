@@ -11,14 +11,14 @@ public class MenuNotesController : MonoBehaviour
     public GameObject tooltipText;
 
     // Start is called before the first frame update
-    void Start()
+    void Update ()
     {
-        foreach(GameObject note in menuNotes)
+        foreach (GameObject note in menuNotes)
         {
             if (SaveSystem.GetBool(note.name) == true)
             {
                 note.GetComponent<UnityEngine.UI.Text>().text = note.name;
-                
+                note.GetComponent<TooltipMenu>().enabled = true;
             }
             else
             {
