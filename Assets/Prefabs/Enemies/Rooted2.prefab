@@ -184,6 +184,15 @@ MonoBehaviour:
   player: {fileID: 0}
   isHitted: 0
   isDead: 0
+  isPatroling: 0
+  isRunning: 0
+  isDing: 0
+  leftEdge: {fileID: 0}
+  rightEdge: {fileID: 0}
+  speed: 0
+  patrolDistanse: 0
+  stoppingDistance: 0
+  idleDuration: 0
 --- !u!61 &4596638956983244145
 BoxCollider2D:
   m_ObjectHideFlags: 0

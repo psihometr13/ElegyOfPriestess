@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Idle : BaseState
+public class Run : BaseState
 {
-    public Idle(Enemy enemy, StateMachine stateMachine, EnemyData enemyData, string animationState) : base(enemy, stateMachine, enemyData, animationState)
+    public Run(Enemy enemy, StateMachine stateMachine, EnemyData enemyData, string animationState) : base(enemy, stateMachine, enemyData, animationState)
     {
     }
 
@@ -35,14 +35,7 @@ public class Idle : BaseState
 
     public override void LogicUpdate()
     {
-        if (enemy.attack)
-        {
-            stateMachine.stateChange(enemy.simpleAttack);
-        }
-        if ((enemyData.rooted || enemyData.mosquito) && enemy.attack && enemy.currentHP <= enemyData.maxHealth / 2)
-        {
-            stateMachine.stateChange(enemy.longAttack);
-        }
+        enemy.Run();
         if (enemy.isHitted)
         {
             stateMachine.stateChange(enemy.hit);
@@ -51,14 +44,21 @@ public class Idle : BaseState
         {
             stateMachine.stateChange(enemy.dead);
         }
-        if (enemy.isPatroling && !enemyData.rooted)
+        if (enemy.attack)
+        {
+            stateMachine.stateChange(enemy.simpleAttack);
+        }
+        if (enemy.isPatroling)
         {
             stateMachine.stateChange(enemy.patrol);
         }
-        if (enemy.isDing)
+        if (enemy.isHitted)
         {
-            enemy.Dinging();
-            stateMachine.stateChange(enemy.ding);
+            stateMachine.stateChange(enemy.hit);
+        }
+        if (enemy.isDead)
+        {
+            stateMachine.stateChange(enemy.dead);
         }
         base.LogicUpdate();
     }

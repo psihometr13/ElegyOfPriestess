@@ -35,9 +35,9 @@ public class Hit : BaseState
 
     public override void LogicUpdate()
     {
-        
+
         enemy.StartCoroutine("WaitAfterHit");
-        if (!enemy.isHitted && !enemy.attack)
+        if (!enemy.isHitted && !enemy.attack && enemyData.rooted)
         {
             stateMachine.stateChange(enemy.idle);
         }
@@ -45,7 +45,7 @@ public class Hit : BaseState
         {
             stateMachine.stateChange(enemy.simpleAttack);
         }
-        if (!enemy.isHitted && enemy.attack && (enemyData.rooted || enemyData.mosquito) 
+        if (!enemy.isHitted && enemy.attack && (enemyData.rooted || enemyData.mosquito)
             && enemy.currentHP <= enemyData.maxHealth / 2)
         {
             stateMachine.stateChange(enemy.longAttack);
@@ -54,8 +54,20 @@ public class Hit : BaseState
         {
             stateMachine.stateChange(enemy.dead);
         }
+        if (!enemy.isHitted && !enemy.attack && enemy.isPatroling)
+        {
+            stateMachine.stateChange(enemy.patrol);
+        }
+        if (!enemy.isHitted && !enemy.attack && enemyData.demon && enemy.isRunning)
+        {
+            stateMachine.stateChange(enemy.run);
+        }
+        if (!enemy.isHitted && enemy.isDing)
+        {
+            stateMachine.stateChange(enemy.ding);
+        }
         base.LogicUpdate();
     }
 
- 
+
 }

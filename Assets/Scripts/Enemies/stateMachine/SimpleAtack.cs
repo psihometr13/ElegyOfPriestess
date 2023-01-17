@@ -37,7 +37,7 @@ public class SimpleAtack : BaseState
     {
 
         enemy.Attack();
-            if (!enemy.attack)
+        if (!enemy.attack)
         {
             stateMachine.stateChange(enemy.idle);
         }
@@ -47,12 +47,19 @@ public class SimpleAtack : BaseState
         }
         if (enemy.isHitted)
         {
-            Debug.Log("hit");
             stateMachine.stateChange(enemy.hit);
         }
         if (enemy.isDead)
         {
             stateMachine.stateChange(enemy.dead);
+        }
+        if (!enemy.attack && enemyData.demon && enemy.isRunning)
+        {
+            stateMachine.stateChange(enemy.run);
+        }
+        if (!enemy.attack && enemyData.demon && enemy.isPatroling)
+        {
+            stateMachine.stateChange(enemy.patrol);
         }
         base.LogicUpdate();
     }

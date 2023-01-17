@@ -39,14 +39,16 @@ public class Enemy_Run : StateMachineBehaviour
         if (Vector2.Distance(target, rb.gameObject.transform.position) <= fightRange)
         {
             //SoundManager.Instance.PlayMusic(BattleMusic);
-
+            
             Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
             rb.MovePosition(newPos);
 
             if (Vector2.Distance(player.position, rb.position) <= attackRange)
             {
+                
                 if (cooldownTimer >= attackCooldown)
                 {
+                    
                     animator.SetTrigger("Attack");
                     cooldownTimer = 0;
                 }

@@ -172,10 +172,10 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: c67aaa12033d4bb4383dc05ad227f069, type: 2}
   anim: {fileID: 579202070407037732}
   checkPosition: {fileID: 2495656861555205162}
-  checkSize: {x: 0, y: 0}
+  checkSize: {x: 0.9, y: 0.5}
   Ground:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   attack: 0
   currentHP: 0
   cooldownTimer: 0
@@ -184,6 +184,14 @@ MonoBehaviour:
   player: {fileID: 0}
   isHitted: 0
   isDead: 0
+  isPatroling: 0
+  isRunning: 0
+  leftEdge: {fileID: 0}
+  rightEdge: {fileID: 0}
+  speed: 2
+  patrolDistanse: 5
+  stoppingDistance: 20
+  idleDuration: 0
 --- !u!61 &5059701544067827329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -197,7 +205,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.8, y: 0}
+  m_Offset: {x: -1.31, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -208,7 +216,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.19, y: 6.22}
+  m_Size: {x: 4.22, y: 6.22}
   m_EdgeRadius: 0
 --- !u!1 &5879057684645275883
 GameObject:

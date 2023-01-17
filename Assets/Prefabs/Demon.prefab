@@ -29,15 +29,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486007287158522412}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.6, y: -71.4, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -27.6, y: -71.41, z: 0}
   m_LocalScale: {x: 1.5385532, y: 1.4549844, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4482414540790515656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &1486007287196393947
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -172,10 +172,10 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: c67aaa12033d4bb4383dc05ad227f069, type: 2}
   anim: {fileID: 1486007286917144774}
   checkPosition: {fileID: 4482414540790515656}
-  checkSize: {x: 0, y: 0}
+  checkSize: {x: 0.9, y: 0.5}
   Ground:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   attack: 0
   currentHP: 0
   cooldownTimer: 0
@@ -184,6 +184,15 @@ MonoBehaviour:
   player: {fileID: 0}
   isHitted: 0
   isDead: 0
+  isPatroling: 0
+  isRunning: 0
+  isDing: 0
+  leftEdge: {fileID: 0}
+  rightEdge: {fileID: 0}
+  speed: 2
+  patrolDistanse: 5
+  stoppingDistance: 20
+  idleDuration: 0
 --- !u!61 &6530585910561891683
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -197,7 +206,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.8, y: 0}
+  m_Offset: {x: -1.31, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -208,7 +217,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.19, y: 6.22}
+  m_Size: {x: 4.22, y: 6.22}
   m_EdgeRadius: 0
 --- !u!1 &5548572347492010761
 GameObject:

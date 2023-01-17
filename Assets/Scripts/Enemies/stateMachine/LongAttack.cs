@@ -43,13 +43,14 @@ public class LongAttack : BaseState
         }
         if (enemy.isHitted)
         {
-            Debug.Log("hit");
             stateMachine.stateChange(enemy.hit);
         }
         if (enemy.isDead)
         {
             stateMachine.stateChange(enemy.dead);
         }
+
+  
         base.LogicUpdate();
     }
 }

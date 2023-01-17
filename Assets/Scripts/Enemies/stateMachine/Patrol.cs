@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Idle : BaseState
+public class Patrol : BaseState
 {
-    public Idle(Enemy enemy, StateMachine stateMachine, EnemyData enemyData, string animationState) : base(enemy, stateMachine, enemyData, animationState)
+    public Patrol(Enemy enemy, StateMachine stateMachine, EnemyData enemyData, string animationState) : base(enemy, stateMachine, enemyData, animationState)
     {
     }
 
@@ -35,13 +35,9 @@ public class Idle : BaseState
 
     public override void LogicUpdate()
     {
-        if (enemy.attack)
+        if (!enemyData.rooted)
         {
-            stateMachine.stateChange(enemy.simpleAttack);
-        }
-        if ((enemyData.rooted || enemyData.mosquito) && enemy.attack && enemy.currentHP <= enemyData.maxHealth / 2)
-        {
-            stateMachine.stateChange(enemy.longAttack);
+            enemy.Patroler();
         }
         if (enemy.isHitted)
         {
@@ -51,10 +47,11 @@ public class Idle : BaseState
         {
             stateMachine.stateChange(enemy.dead);
         }
-        if (enemy.isPatroling && !enemyData.rooted)
+        if (enemy.isRunning && enemyData.demon)
         {
-            stateMachine.stateChange(enemy.patrol);
+            stateMachine.stateChange(enemy.run);
         }
+
         if (enemy.isDing)
         {
             enemy.Dinging();
