@@ -23,13 +23,7 @@ public class ChangeSprite : MonoBehaviour
             doorTeleport.gameObject.GetComponent<TeleportSystem>().enabled = false;
         }
 
-    }
-    IEnumerator Waitfor()
-    {
-        yield return new WaitForSeconds(3f);
-        this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
-
-    }
+     }
     void Update() 
     {
         if(check== true) 
@@ -42,10 +36,12 @@ public class ChangeSprite : MonoBehaviour
                 SaveSystem.SetBool("withWeapon", true);
             }
         }
-        if (check2==true)
+        if (check2)
         {
-            StartCoroutine("Waitfor");
+            SaveSystem.SetBool("withWeapon", false);
+            this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
         }
+        
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -54,9 +50,9 @@ public class ChangeSprite : MonoBehaviour
             check = true;
             weapon = collision.gameObject;
         }
-        if (collision.CompareTag("Sister"))
+        if (collision.CompareTag("hair"))
         {
-            check2 = true;
+            check2= true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

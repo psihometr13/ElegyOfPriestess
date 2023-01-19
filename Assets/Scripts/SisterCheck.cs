@@ -33,7 +33,7 @@ public class SisterCheck : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         SaveSystem.SetBool("issister", true);
-        SaveSystem.SetBool("withWeapon", false);
+      
         Upd_PlayerControl.Instance.SaveGame();
         SceneManager.LoadScene(4);
     }

@@ -29,6 +29,7 @@ TagManager:
   - NewAttack
   - Sister
   - NoOne
+  - hair
   layers:
   - Default
   - TransparentFX

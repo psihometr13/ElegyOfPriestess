@@ -519,7 +519,7 @@ public class Upd_PlayerControl : MonoBehaviour
 		if (SaveSystem.GetBool("issister"))
 		{
 			Destroy(sister);
-            this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+           // this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
         }
 		if (SaveSystem.GetBool("withWeapon"))
 		{
@@ -648,6 +648,11 @@ public class Upd_PlayerControl : MonoBehaviour
             speed = 0;
             StartCoroutine("Waitfor");
         }
+        if (collision.CompareTag("hair"))
+        {
+            this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+        }
+       
     }
 
 }
