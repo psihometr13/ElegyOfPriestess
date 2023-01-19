@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Enemy : MonoBehaviour
     public Patrol patrol;
     public Run run;
     public Ding ding;
+    public Pray pray;
 
     [Header("Variables")]
     public Animator anim;
@@ -39,10 +41,14 @@ public class Enemy : MonoBehaviour
     public bool isPatroling = false;
     public bool isRunning = false;
     public bool isDing = false;
+    public bool isPraying = false;
+    public bool strongAttack;
 
     [Header("Patrol parameters")]
     public Transform leftEdge;
     public Transform rightEdge;
+
+    public bool isOnEdge = false;
 
     [SerializeField] private float speed;
     [SerializeField] private float patrolDistanse;
@@ -54,6 +60,14 @@ public class Enemy : MonoBehaviour
     [Header("Idle Behaviour")]
     [SerializeField] private float idleDuration;
     private float idleTimer;
+
+    [SerializeField] public Object bulletPrefab;
+    [SerializeField] public Object bulletPrefab1;
+    [SerializeField] public Object bulletPrefab2;
+    [SerializeField] public GameObject actualShootPoint;
+    [SerializeField] public float bulletVelocity;
+
+    [SerializeField] private float attackCooldown;
 
     private void Awake()
     {
@@ -67,6 +81,7 @@ public class Enemy : MonoBehaviour
         patrol = new Patrol(this, stateMachine, enemyData, "Patrol");
         run = new Run(this, stateMachine, enemyData, "Run");
         ding = new Ding(this, stateMachine, enemyData, "Ding");
+        pray = new Pray(this, stateMachine, enemyData, "Pray");
         player = GameObject.Find("Main_Hero_NoWeapon").transform;
     }
     // Start is called before the first frame update
@@ -80,17 +95,16 @@ public class Enemy : MonoBehaviour
         //leftEdge = new Vector2(gameObject.transform.position.x - patrolDistanse, gameObject.transform.position.y);
         //rightEdge = new Vector2(gameObject.transform.position.x + patrolDistanse, gameObject.transform.position.y);
         initScale = gameObject.transform.localScale;
-        if (enemyData.demon) isPatroling = true;
+        if (enemyData.demon || enemyData.spirit || enemyData.mosquito) isPatroling = true;
+        bulletPrefab = bulletPrefab1;
+        strongAttack = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isPatroling);
-        Debug.Log(isRunning);
-        // Debug.Log($"ishit{isHitted}");
-        //Debug.Log(isDead);
-        // Debug.Log($"attack{attack}");
+        cooldownTimer += Time.deltaTime;
+
         if (player.transform.position.x < gameObject.transform.position.x)
         {
             direct = -1;
@@ -105,41 +119,92 @@ public class Enemy : MonoBehaviour
         {
             LookAtPlayer();
         }
-
-       // Debug.Log(direct);
-        if (Vector2.Distance(player.position, gameObject.transform.position) < stoppingDistance && !enemyData.rooted)
+       //Debug.Log(isOnEdge);
+        if (Vector2.Distance(player.position, gameObject.transform.position) < stoppingDistance && enemyData.demon && !isOnEdge)
         {
             isPatroling = false;
             if(enemyData.demon) isRunning = true;
         }
-        else if (Vector2.Distance(player.position, gameObject.transform.position) > stoppingDistance && !enemyData.rooted )
+        else if (Vector2.Distance(player.position, gameObject.transform.position) > stoppingDistance && enemyData.demon)
         {
             if (enemyData.demon) isRunning = false;
             isPatroling = true;
+            isOnEdge = false;
         }
-        
-        
+    }
+    public void ChangeAttack()
+    {
+        if(Upd_PlayerControl.Instance.maxEnergy <= 40)
+        {
+            isPraying = false;
+            isDing = true;
+        }
+        else
+        {
+            isPraying = true;
+            isDing = false;
+        }
     }
     public void Dinging()
     {
         Rotate(direct);
+        if (cooldownTimer >= attackCooldown)
+        {
+            player.GetComponent<Upd_PlayerControl>().ChangeHealth(10);
+            cooldownTimer= 0;
+        }
+    }
+    public void Praying()
+    {
+        Rotate(direct);
+        if (cooldownTimer >= attackCooldown)
+        {
+            player.GetComponent<Upd_PlayerControl>().ChangeEnergy(10);
+            cooldownTimer = 0;
+        }
     }
     public void Rotate(int _direction)
     {   
             gameObject.transform.localScale = new Vector3(Mathf.Abs(initScale.x) * _direction,
                initScale.y, initScale.z);
     }
+
+    public void SpawnFireball()
+    {
+        var bulletObject = GameObject.Instantiate(bulletPrefab, actualShootPoint.transform.position, Quaternion.identity);
+
+        var bullet = bulletObject.GetComponent<EnemyBullet>();
+        if (strongAttack) bullet.Init(player.transform.position, bulletVelocity, enemyData.maxDamage * 2);
+        else bullet.Init(player.transform.position, bulletVelocity, enemyData.maxDamage);
+    }
     public void Attack()
     {
-        if (cooldownTimer >= enemyData.attackCooldown)
+        if (enemyData.mosquito)
         {
-            Upd_PlayerControl.Instance.DamagePlayer(enemyData.maxDamage);
+            Rotate(direct);
+        }
+        if (cooldownTimer >= enemyData.attackCooldown && !enemyData.mosquito)
+        {
+            if (enemyData.rooted && strongAttack) Upd_PlayerControl.Instance.DamagePlayer(enemyData.maxDamage*2);
+            else Upd_PlayerControl.Instance.DamagePlayer(enemyData.maxDamage);
             cooldownTimer = 0;
         }
     }
     public bool CheckGround() // перевірка чи є колайдер під ногами
     {
         return Physics2D.OverlapBox(checkPosition.position, checkSize, 0, Ground);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (enemyData.demon)
+            {
+                attack = true;
+                isRunning = false;
+            }
+        }
     }
 
     public void OnTriggerStay2D(Collider2D collision)
@@ -149,32 +214,38 @@ public class Enemy : MonoBehaviour
             if (!enemyData.spirit)
             {
                 attack = true;
+                isPatroling = false;
             }
             if (enemyData.spirit)
             {
-                isDing = true;
+                ChangeAttack();
                 isPatroling = false;
             }
-            }
         }
+    }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
         if (!enemyData.spirit)
         {
             attack = false;
+            isPatroling = true;
         }
         if (enemyData.spirit) {
+            isPraying = false;
             isDing = false;
             isPatroling = true;
         }
-       
     }
 
     public void TakeDamage(float damage)
     {
         currentHP = Mathf.Clamp(currentHP - damage, 0, enemyData.maxHealth);
         if (currentHP > 0) isHitted = true;
+        if(isHitted && enemyData.spirit)
+        {
+            Rotate(direct);
+        }
         if (currentHP <= 1) isDead = true;
     }
     public void Respawn()
@@ -188,23 +259,38 @@ public class Enemy : MonoBehaviour
     }
     IEnumerator WaitAfterHit()
     {
-        if(!enemyData.spirit)
+        if (!enemyData.spirit)
         {
-            yield return new WaitForSeconds(0.65f);
+            yield return new WaitForSeconds(0.55f);
+        }
+        else if (enemyData.mosquito)
+        {
+            yield return new WaitForSeconds(1f);
         }
         else
         {
-            yield return new WaitForSeconds(1.3f);
+            yield return new WaitForSeconds(0.6f);
         }
 
         isHitted = false;
     }
+
     IEnumerator Res()
     {
-        yield return new WaitForSeconds(0.8f);
-
+        if (!enemyData.spirit)
+        {
+            yield return new WaitForSeconds(0.8f);
+        }
+        else if (enemyData.mosquito)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.6f);
+        }
         gameObject.SetActive(false);
-        Invoke("Respawn", 3f);
+        Invoke("Respawn", 300f);
     }
     public void LookAtPlayer()
     {
@@ -216,14 +302,12 @@ public class Enemy : MonoBehaviour
             transform.localScale = flipped;
             transform.rotation = Quaternion.Euler(0, 0, 0);
             isFlipped = false;
-           // Debug.Log("LOOK");
         }
         else if (transform.position.x < player.position.x && !isFlipped)
         {
             transform.localScale = flipped;
             transform.rotation = Quaternion.Euler(0, 180, 0);
             isFlipped = true;
-           // Debug.Log("LOOK2");
         }
     }
 
@@ -270,12 +354,21 @@ public class Enemy : MonoBehaviour
       
         Vector2 target = new Vector2(player.position.x, gameObject.transform.position.y);
 
-        if (Vector2.Distance(target, gameObject.transform.position) <= stoppingDistance && !attack)
+        if (Vector2.Distance(target, gameObject.transform.position) <= stoppingDistance && !attack && !isOnEdge)
         {
             //SoundManager.Instance.PlayMusic(BattleMusic);
-
-            Vector2 newPos = Vector2.MoveTowards(gameObject.transform.position, target, speed * 3 * Time.fixedDeltaTime);
-            gameObject.GetComponent<Rigidbody2D>().MovePosition(newPos);
+            if((gameObject.transform.position.x >= rightEdge.position.x || gameObject.transform.position.x <= leftEdge.position.x) && enemyData.demon)
+            {
+                //speed = 0;
+                isOnEdge = true;
+                isPatroling= true;
+                stateMachine.stateChange(patrol);
+            }
+            else
+            {
+                Vector2 newPos = Vector2.MoveTowards(gameObject.transform.position, target, speed * 3f * Time.fixedDeltaTime);
+                gameObject.GetComponent<Rigidbody2D>().MovePosition(newPos);
+            }
         }
         else
         {

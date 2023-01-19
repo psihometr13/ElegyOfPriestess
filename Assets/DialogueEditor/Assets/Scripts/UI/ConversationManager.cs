@@ -163,7 +163,7 @@ namespace DialogueEditor
 
             if (OnConversationEnded != null)
                 OnConversationEnded.Invoke();
-            Upd_PlayerControl.Instance.speed = 6;
+            Upd_PlayerControl.Instance.speed = 4;
             Upd_PlayerControl.Instance._anim.enabled = true;
             Upd_PlayerControl.Instance._anim2.enabled = true;
         }

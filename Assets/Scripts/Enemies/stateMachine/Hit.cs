@@ -35,7 +35,7 @@ public class Hit : BaseState
 
     public override void LogicUpdate()
     {
-
+    
         enemy.StartCoroutine("WaitAfterHit");
         if (!enemy.isHitted && !enemy.attack && enemyData.rooted)
         {
@@ -54,7 +54,7 @@ public class Hit : BaseState
         {
             stateMachine.stateChange(enemy.dead);
         }
-        if (!enemy.isHitted && !enemy.attack && enemy.isPatroling)
+        if (!enemy.isHitted && !enemy.attack && enemy.isPatroling && !enemyData.rooted)
         {
             stateMachine.stateChange(enemy.patrol);
         }
@@ -66,7 +66,11 @@ public class Hit : BaseState
         {
             stateMachine.stateChange(enemy.ding);
         }
-        base.LogicUpdate();
+        if (!enemy.isHitted && enemy.isPraying)
+        {
+            stateMachine.stateChange(enemy.pray);
+        }
+           base.LogicUpdate();
     }
 
 

@@ -17,5 +17,7 @@ MonoBehaviour:
   demon: 1
   spirit: 0
   maxHealth: 80
-  maxDamage: 25
+  maxDamage: 20
   attackCooldown: 1
+  maxHealthSteal: 0
+  maxEnergySteal: 0

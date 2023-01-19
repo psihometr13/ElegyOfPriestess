@@ -16,5 +16,7 @@ public class EnemyData : ScriptableObject
     public float maxDamage;
     public float attackCooldown;
 
-
+    [Header("For Spirit")]
+    public float maxHealthSteal;
+    public float maxEnergySteal;
 }

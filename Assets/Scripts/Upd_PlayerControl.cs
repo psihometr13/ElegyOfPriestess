@@ -4,6 +4,10 @@ using System.Diagnostics;
 using UnityEngine;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+using System;
+using System.IO;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -13,36 +17,51 @@ public class Upd_PlayerControl : MonoBehaviour
 	//private bool _isMoving;
 
 	[SerializeField] private SpriteRenderer _spriteRenderer;
-	public static Upd_PlayerControl Instance { get; private set; }
+
+    [SerializeField] private Text HP;
+    [SerializeField] private Text Mana;
+    public static Upd_PlayerControl Instance { get; private set; }
 	//Move
-	public float speed = 5; // швидкість руху
+	public float speed = 4; // швидкість руху
 	public float acceleration = 1; // прискорення
-	public float runSpeed = 1; // run
+	public float runSpeed = 0.8F; // run
 	public float jumpForce = 15; // сила стрибка
 	public float jumpDistance = 0.75f; // відстань від центру об'єкта до поверхні
 	public bool facingRight = false; // в яку сторону дивиться
 	public KeyCode jumpButton = KeyCode.Space; // кнопка для стрибка
-	public GameObject spawnPoint; //spawn
+	[SerializeField] GameObject spawnPoint;
 
 	public Transform checkPosition;
 	public Vector2 checkSize;
 	public LayerMask Ground;
 
-	[SerializeField] List<GameObject> rooms;
+	public bool isRingUsed = false;
+	public bool isRosaryUsed = false;
+
+    [SerializeField] List<GameObject> rooms;
 	public int currentRoom;
 
 	private Vector3 direction;
 	public static Rigidbody2D body;
 	public static CapsuleCollider2D capsuleCollider;
 
+	[Header("Save")]
+	public Image Save1;
+	public Image Save2;
+	public Image Save3;
+	public GameObject star;
+	public GameObject weapon;
+    public GameObject doorTeleport;
+	public GameObject sister;
 
-	//Health
-	[Header("Health Parameters")]
+
+    //Health
+    [Header("Health Parameters")]
 	[SerializeField] public float curHealth = 0;
 	[SerializeField] public float maxHealth = 100;
 	public HealthBar healthBar;
 	private bool isDead = true;
-	[SerializeField] private int restoreHealthCount = 10;
+	[SerializeField] private int restoreHealthCount = 6;
 	[SerializeField] private int restoreHealthEnergyUsage = 50;
 	[SerializeField] public float maxDamage = 100;
 
@@ -51,16 +70,20 @@ public class Upd_PlayerControl : MonoBehaviour
 	[SerializeField] public float curEnergy = 0;
 	[SerializeField] public float maxEnergy = 100;
 	public EnergyBar energyBar;
-	[SerializeField] private int restoreEnergyCount = 10;
-
-	//Achimevents
-	public int countOfDeaths = 0;
+	[SerializeField] private int restoreEnergyCount = 6;
+    
+    //Achimevents
+    public int countOfDeaths = 0;
 	public int countOfNotes = 0;
 	public int countOfKilledBosses = 0;
 	public int countOfVisitedLoc = 0;
 	public int countOfUsedHeals = 0;
 	public int countOfMagic = 0;
 	public int countOfChests = 0;
+	public int countOfDeathsTotal = 0;
+	public bool gameCompleted = false;
+	public int secretRoom1 = 0;
+	public int secretRoom2 = 0;
 
 	//Exp
 	[SerializeField] public float curExp = 0;
@@ -76,7 +99,9 @@ public class Upd_PlayerControl : MonoBehaviour
 	private float cooldownTimer = 0;
 
 	[SerializeField] public Transform firepoint;
-	[SerializeField] private GameObject[] fireballs;
+	[SerializeField] private GameObject fireball1;
+	[SerializeField] private GameObject fireball2;
+	[SerializeField] private GameObject fireball3;
 
 	[SerializeField] private float range;
 	[SerializeField] private float attackCooldown;
@@ -89,16 +114,37 @@ public class Upd_PlayerControl : MonoBehaviour
 	private bool grounded;
 	public bool IsMoving;
 	public float distanceToGround = 3;
-	void Start()
+    public RuntimeAnimatorController anim1;
+    public RuntimeAnimatorController anim2;
+    public RuntimeAnimatorController anim3;
+	bool newAtck = false;
+
+    [SerializeField] Image energyDebuff;
+    [SerializeField] Image healthDebuff;
+
+    void Start()
 	{
-		//_animations = GetComponentInChildren<Animations>();
-		body = GetComponent<Rigidbody2D>();
+		UnityEngine.Debug.Log(countOfDeaths);
+        GameObject.Find("SpawnPoint"); //spawn
+        healthDebuff.enabled = false;
+        energyDebuff.enabled = false;
+        //_animations = GetComponentInChildren<Animations>();
+        body = GetComponent<Rigidbody2D>();
 		_anim = GetComponent<Animator>();
 		_anim2 = GetComponent<Animator>();
 		body.freezeRotation = true;
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
-	}
+
+        if (MenuController.Instance.newGame == false && 
+			File.Exists(Path.Combine(@"C:\Users\Beebo\AppData\LocalLow\Dream\ElegyOfPriestess\", "Profile.bin")))
+        LoadGame(); 
+		star.SetActive(true);
+        star.transform.position = gameObject.transform.position;
+        spawnPoint.transform.position = gameObject.transform.position;
+		if(isRingUsed) GameObject.FindGameObjectsWithTag("Bathilda's-ring")[0].SetActive(false);
+		if(isRosaryUsed) GameObject.FindGameObjectsWithTag("Rosary")[0].SetActive(false);
+    }
 	private void Awake()
 	{
 		// If there is an instance, and it's not me, delete myself.
@@ -113,10 +159,17 @@ public class Upd_PlayerControl : MonoBehaviour
 	}
     IEnumerator MoveAfterAttack()
     {
-        yield return new WaitForSeconds(1f);
-        speed = 6;
+        yield return new WaitForSeconds(0.5f);
+        speed = 4;
 
     }
+    IEnumerator Waitfor()
+    {
+        yield return new WaitForSeconds(3f);
+		speed= 4;
+
+    }
+
     void FixedUpdate()
 	{
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
@@ -197,6 +250,16 @@ public class Upd_PlayerControl : MonoBehaviour
 
 	void Update()
 	{
+        //UnityEngine.Debug.Log(countOfMagic);
+        countOfVisitedLoc = secretRoom1 + secretRoom2;
+		//UnityEngine.Debug.Log(currentRoom);
+        //UnityEngine.Debug.Log(countOfVisitedLoc);
+        //UnityEngine.Debug.Log(fireball3.GetComponent<EnemyProjectile>().FindClosestEnemy().name);
+        int HPVisible = (int)Math.Round(curHealth);
+		int ManaVisible = (int)Math.Round(curEnergy);
+
+		HP.text = HPVisible.ToString() + "/" + maxHealth.ToString();
+		Mana.text = ManaVisible.ToString() + "/" + maxEnergy.ToString();
 		RestoreHealth();
 		RestoreEnergy();
 		healthBar.SetHealth(curHealth);
@@ -212,33 +275,46 @@ public class Upd_PlayerControl : MonoBehaviour
 
 		IsFlying();
 
-        cooldownTimer += Time.deltaTime;
+		cooldownTimer += Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.Alpha7))
-        {
-            speed = 0;
-            _anim.SetTrigger("Attack");
-            Attack(10);
-            StartCoroutine("MoveAfterAttack");
-        }
-        if (Input.GetKey(KeyCode.Alpha8))
-        {
-            speed = 0;
-            _anim.SetTrigger("Attack");
-            StartCoroutine("MoveAfterAttack");
-        }
-        if (Input.GetKey(KeyCode.Alpha9))
-        {
-            speed = 0;
-            _anim.SetTrigger("AttackLg");
-            StartCoroutine("MoveAfterAttack");
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
+		if (Input.GetKeyDown(KeyCode.Alpha7))
 		{
-			SaveGame();
+			if (cooldownTimer >= attackCooldown){
+                speed = 0;
+                _anim.SetTrigger("Attack");
+                Attack(fireball1, 10);
+                StartCoroutine("MoveAfterAttack");
+            }
+			
 		}
+		if(newAtck){
+            if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                if (cooldownTimer >= attackCooldown)
+                {
+                    speed = 0;
+                    _anim.SetTrigger("Attack");
+                    Attack(fireball2, 30);
+                    StartCoroutine("MoveAfterAttack");
+					countOfMagic = 2;
+                }
+            }
+        }
 
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			if (Save1.enabled && Save2.enabled && Save3.enabled)
+			{
+                SaveGame();
+				showStar();
+            }
+		}
+	
+		void showStar()
+        {
+            star.SetActive(true);
+            star.transform.position = gameObject.transform.position;
+        }
 		//if (Input.GetKeyDown(KeyCode.F) && grounded)
 		//      {
 		//	body.velocity = new Vector2(0, jumpForce);
@@ -249,8 +325,6 @@ public class Upd_PlayerControl : MonoBehaviour
 		//	UseEnergy(10);
 		//}
 
-
-
 		//float h = Input.GetAxis("Horizontal");
 		//direction = new Vector2(h, 0);
 		//float h = Input.GetAxis("Horizontal");
@@ -259,27 +333,39 @@ public class Upd_PlayerControl : MonoBehaviour
 		//healthBar.SetHealth(curHealth);
 	}
 
-    void Attack(int energy)
+	void StrongAttack(GameObject fireball, int energy)
+	{
+        if (curEnergy >= energy && cooldownTimer >= attackCooldown)
+        {
+            UseEnergy(energy);
+            //fireball.transform.position = new Vector3(fireball.GetComponent<EnemyProjectile>().FindClosestEnemy().transform.position.x, fireball.GetComponent<EnemyProjectile>().FindClosestEnemy().transform.position.y, 0);
+            fireball.SetActive(true);
+            fireball.GetComponent<EnemyProjectile>().ActivateProjectile();
+            cooldownTimer = 0;
+        }
+    }
+
+    void Attack(GameObject fireball, int energy)
     {
         if (curEnergy >= energy && cooldownTimer >= attackCooldown)
         {
             UseEnergy(energy);
-            fireballs[FindFireball()].transform.position = firepoint.position;
-            fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+            fireball.transform.position = firepoint.position;
+            fireball.GetComponent<EnemyProjectile>().ActivateProjectile();
             cooldownTimer = 0;
         }
         //GameObject.FindGameObjectsWithTag("Boss")[0].GetComponent<BossHealth>().TakeDamage(energy);
     }
 
-    private int FindFireball()
-    {
-        for (int i = 0; i < fireballs.Length; i++)
-        {
-            if (!fireballs[i].activeInHierarchy)
-                return i;
-        }
-        return 0;
-    }
+    //private int FindFireball()
+    //{
+    //    for (int i = 0; i < fireballs.Length; i++)
+    //    {
+    //        if (!fireballs[i].activeInHierarchy)
+    //            return i;
+    //    }
+    //    return 0;
+    //}
 
     private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -287,7 +373,15 @@ public class Upd_PlayerControl : MonoBehaviour
 		{
 			currentRoom = rooms.IndexOf(collision.gameObject);
 			// UnityEngine.Debug.Log(currentRoom);
-		}
+			if (currentRoom == 7) 
+			{
+				secretRoom1 = 1;
+			}
+            else if(currentRoom == 9)
+            {
+                secretRoom2 = 1;
+            }
+        }
 
         float damagePerSecond = 20;
 
@@ -318,6 +412,28 @@ public class Upd_PlayerControl : MonoBehaviour
 		}
 	}
 
+	public void ChangeHealth(float health)
+	{
+        healthDebuff.enabled = true;
+
+        maxHealth -= health;
+		if(maxHealth < curHealth)
+		{
+			curHealth = maxHealth;
+		}
+		if(curHealth <= 0) DiePlayer();
+    }
+	
+	public void ChangeEnergy(float energy)
+	{
+        energyDebuff.enabled = true;
+
+        maxEnergy -= energy;
+		if(maxEnergy < curEnergy)
+		{
+            curEnergy = maxEnergy;
+		}
+    }
 
 	public void DamagePlayer(float damage)
 	{
@@ -332,12 +448,27 @@ public class Upd_PlayerControl : MonoBehaviour
 		}
 	}
 
-	public void DiePlayer()
+	public void ResetStates()
 	{
+        healthDebuff.enabled = false;
+        energyDebuff.enabled = false;
+        maxHealth = 100;
+        maxEnergy = 100;
+        countOfDeaths += 1;
+        countOfDeathsTotal += 1;
+    }
+    public void gameComplete()
+    {
+        gameCompleted = true;
+    }
+    public void DiePlayer()
+	{
+		ResetStates();
 		curHealth = 0;
 		isDead = true;
 		this.transform.position = spawnPoint.transform.position;
 		curHealth = maxHealth;
+		curEnergy = maxEnergy;
 	}
 
 	void RestoreHealth()
@@ -379,25 +510,93 @@ public class Upd_PlayerControl : MonoBehaviour
 		isPontiffHelped = true;
 	}
 
-	void SaveGame()
-	{
-		////General
-		//SaveSystem.SetVector2("PlayerPosition", transform.position);
-		//SaveSystem.SetFloat("CurrentHealth", curHealth);
-		//SaveSystem.SetFloat("CurrentEnergy", curEnergy);
-		//SaveSystem.SetFloat("CurrentExp", curExp);
-		//SaveSystem.SetFloat("MaxDamage", maxDamage);
+    public void LoadGame()
+    {
+		Save1.enabled = false;
+		Save2.enabled = false;
+		Save3.enabled = false;
 
-		//Achimenents
-		SaveSystem.SetInt("countOfDeaths", countOfDeaths);
+		if (SaveSystem.GetBool("issister"))
+		{
+			Destroy(sister);
+            this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+        }
+		if (SaveSystem.GetBool("withWeapon"))
+		{
+            doorTeleport.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            this.GetComponent<Animator>().runtimeAnimatorController = anim2 as RuntimeAnimatorController;
+			Destroy(weapon);
+           
+        }
+        if (SaveSystem.GetBool("NewAttack"))
+        {
+            newAtck = true;
+        }
+		else
+		{
+			newAtck = false;
+		}
+        //General
+        transform.position = SaveSystem.GetVector2("PlayerPosition");
+        curHealth = SaveSystem.GetFloat("CurrentHealth");
+        curEnergy = SaveSystem.GetFloat("CurrentEnergy");
+        curExp = SaveSystem.GetFloat("CurrentExp");
+        maxDamage = SaveSystem.GetFloat("MaxDamage");
+        maxHealth = SaveSystem.GetFloat("MaxHealth");
+        maxEnergy = SaveSystem.GetFloat("MaxEnergy");
+		isRingUsed = SaveSystem.GetBool("isRingUsed");
+		isRosaryUsed = SaveSystem.GetBool("isRosaryUsed");
+
+        //Achimenents
+        countOfDeaths = SaveSystem.GetInt("countOfDeaths");
+        countOfNotes = SaveSystem.GetInt("countOfNotes");
+        countOfKilledBosses = SaveSystem.GetInt("countOfKilledBosses");
+        countOfVisitedLoc = SaveSystem.GetInt("countOfVisitedLoc");
+        countOfUsedHeals = SaveSystem.GetInt("countOfUsedHeals");
+        countOfMagic = SaveSystem.GetInt("countOfMagic");
+        countOfChests = SaveSystem.GetInt("countOfChests");
+        countOfDeathsTotal = SaveSystem.GetInt("countOfDeathsTotal");
+        gameCompleted = SaveSystem.GetBool("gameCompleted");
+        secretRoom1 = SaveSystem.GetInt("secretRoom1");
+        secretRoom2 = SaveSystem.GetInt("secretRoom2");
+    }
+
+    public void SaveGame()
+	{
+		Save1.enabled = false;
+		Save2.enabled = false;
+		Save3.enabled = false;
+		
+		countOfDeaths = 0;
+
+        if (newAtck)
+		{
+            SaveSystem.SetBool("NewAttack", true);
+        }
+		////General
+		SaveSystem.SetVector2("PlayerPosition", transform.position);
+		SaveSystem.SetFloat("CurrentHealth", curHealth);
+		SaveSystem.SetFloat("CurrentEnergy", curEnergy);
+		SaveSystem.SetFloat("CurrentExp", curExp);
+		SaveSystem.SetFloat("MaxDamage", maxDamage);
+		SaveSystem.SetFloat("MaxHealth", maxHealth);
+		SaveSystem.SetFloat("MaxEnergy", maxEnergy);
+		SaveSystem.SetBool("isRingUsed", isRingUsed);
+		SaveSystem.SetBool("isRosaryUsed", isRosaryUsed);
+
+        //Achimenents
+        SaveSystem.SetInt("countOfDeaths", countOfDeaths);
 		SaveSystem.SetInt("countOfNotes", countOfNotes);
 		SaveSystem.SetInt("countOfKilledBosses", countOfKilledBosses);
 		SaveSystem.SetInt("countOfVisitedLoc", countOfVisitedLoc);
 		SaveSystem.SetInt("countOfUsedHeals", countOfUsedHeals);
 		SaveSystem.SetInt("countOfMagic", countOfMagic);
 		SaveSystem.SetInt("countOfChests", countOfChests);
-
-		SaveSystem.SaveToDisk();
+		SaveSystem.SetInt("countOfDeathsTotal", countOfDeathsTotal);
+		SaveSystem.SetBool("gameCompleted", gameCompleted);
+        SaveSystem.GetInt("secretRoom1", secretRoom1 );
+        SaveSystem.GetInt("secretRoom2", secretRoom2);
+        SaveSystem.SaveToDisk();
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -414,24 +613,41 @@ public class Upd_PlayerControl : MonoBehaviour
 
 		if (collision.gameObject.tag == "Rosary")
 		{
-			UnityEngine.Debug.Log("Rosary used");
-			maxHealth = maxHealth * 1.25f;
+            SaveSystem.SetBool("isRosaryUsed", isRosaryUsed);
+            UnityEngine.Debug.Log("Rosary used");
+			maxHealth = maxHealth+25;
+			isRosaryUsed = true;
+			countOfChests += 1;
 			Destroy(collision.gameObject);
 		}
 
 		if (collision.gameObject.tag == "Blindfold")
 		{
-			UnityEngine.Debug.Log("Blindfold used");
+            UnityEngine.Debug.Log("Blindfold used");
 			maxDamage = maxDamage * 115 / 100;
 			Destroy(collision.gameObject);
 		}
 
 		if (collision.gameObject.tag == "Bathilda's-ring")
 		{
-			UnityEngine.Debug.Log("Bathilda's ring used");
-			maxEnergy = maxEnergy * 1.25f;
-			Destroy(collision.gameObject);
+            UnityEngine.Debug.Log("Bathilda's ring used");
+			maxEnergy = maxEnergy + 25;
+            isRingUsed = true;
+            countOfChests += 1;
+            Destroy(collision.gameObject);
 		}
-	}
+        if (collision.gameObject.tag == "NewAttack")
+        {
+			newAtck = true;
+            Destroy(collision.gameObject);
+			
+        }
+        if (collision.CompareTag("Sister"))
+        {
+            _anim.SetTrigger("Clear");
+            speed = 0;
+            StartCoroutine("Waitfor");
+        }
+    }
 
 }

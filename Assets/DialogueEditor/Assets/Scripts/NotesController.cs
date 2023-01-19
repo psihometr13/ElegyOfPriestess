@@ -16,7 +16,15 @@ public class NotesController : MonoBehaviour
 
     private void Start()
     {
-        SaveSystem.SetBool(gameObject.name, false);
+        if (SaveSystem.GetBool(gameObject.name))
+        {
+           gameObject.SetActive(false);
+        }
+        else
+        {
+            SaveSystem.SetBool(gameObject.name, false);
+        }
+      //  SaveSystem.SetBool(gameObject.name, false);
         image.enabled = false;
         text.enabled = false;
     }
@@ -60,4 +68,5 @@ public class NotesController : MonoBehaviour
     {
         check = false;
     }
+
 }

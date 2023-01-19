@@ -51,11 +51,22 @@ public class Patrol : BaseState
         {
             stateMachine.stateChange(enemy.run);
         }
-
         if (enemy.isDing)
         {
-            enemy.Dinging();
             stateMachine.stateChange(enemy.ding);
+        }
+        if (enemy.isPraying)
+        {
+            enemy.Praying();
+            stateMachine.stateChange(enemy.pray);
+        }
+        if(enemy.attack && enemyData.mosquito)
+        {
+            stateMachine.stateChange(enemy.simpleAttack);
+        }
+        if (enemyData.mosquito && enemy.attack && enemy.currentHP <= enemyData.maxHealth / 2)
+        {
+            stateMachine.stateChange(enemy.longAttack);
         }
         base.LogicUpdate();
     }

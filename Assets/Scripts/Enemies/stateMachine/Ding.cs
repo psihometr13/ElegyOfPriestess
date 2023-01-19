@@ -35,10 +35,12 @@ public class Ding : BaseState
 
     public override void LogicUpdate()
     {
+        enemy.Dinging();
         if (!enemy.isDing)
         {
             stateMachine.stateChange(enemy.patrol);
         }
+
         if (enemy.isHitted)
         {
             stateMachine.stateChange(enemy.hit);
@@ -46,6 +48,10 @@ public class Ding : BaseState
         if (enemy.isDead)
         {
             stateMachine.stateChange(enemy.dead);
+        }
+        if (enemy.isPraying)
+        {
+            stateMachine.stateChange(enemy.pray);
         }
         base.LogicUpdate();
     }

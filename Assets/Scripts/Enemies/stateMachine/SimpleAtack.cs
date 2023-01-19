@@ -44,6 +44,8 @@ public class SimpleAtack : BaseState
         if ((enemyData.rooted || enemyData.mosquito) && enemy.currentHP <= enemyData.maxHealth / 2)
         {
             stateMachine.stateChange(enemy.longAttack);
+            enemy.bulletPrefab = enemy.bulletPrefab2;
+            enemy.strongAttack = true;
         }
         if (enemy.isHitted)
         {

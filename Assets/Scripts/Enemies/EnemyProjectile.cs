@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyProjectile : MonoBehaviour
 {
     [SerializeField] private float damage;
     [SerializeField] private float speed;
     [SerializeField] private float resetTime;
+    [SerializeField] private bool special;
+
+    GameObject[] gos;
+    GameObject closest;
+
     private float lifetime;
     //private Animator anim;
     private BoxCollider2D coll;
 
     private bool hit;
+
+    private void Start()
+    {
+        gos = GameObject.FindGameObjectsWithTag("MeleeEnemy");
+    }
 
     private void Awake()
     {
@@ -44,12 +55,9 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.gameObject.tag == "Player" && gameObject.tag != "Fireball")
         {
             DamagePlayer();
-            Debug.Log("Attack from Ranged Enemy!");
         }
         if (collision.gameObject.tag == "MeleeEnemy")
             collision.transform.GetComponent<Enemy>().TakeDamage(damage);
-        if (collision.gameObject.tag == "Boss")
-            collision.gameObject.GetComponent<BossHealth>().TakeDamage(damage);
 
         Deactivate(); //When this hits any object deactivate arrow
     }
@@ -63,4 +71,21 @@ public class EnemyProjectile : MonoBehaviour
     {
         Upd_PlayerControl.Instance.DamagePlayer(damage);
     }
+
+    //public GameObject FindClosestEnemy()
+    //{
+    //    float distance = Mathf.Infinity;
+    //    Vector3 position = transform.position;
+    //    foreach (GameObject go in gos)
+    //    {
+    //        Vector3 diff = go.transform.position - position;
+    //        float curDistance = diff.sqrMagnitude;
+    //        if (curDistance < distance)
+    //        {
+    //            closest = go;
+    //            distance = curDistance;
+    //        }
+    //    }
+    //    return closest;
+    //}
 }

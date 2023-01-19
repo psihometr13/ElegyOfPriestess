@@ -16,6 +16,8 @@ MonoBehaviour:
   mosquito: 0
   demon: 0
   spirit: 0
-  maxHealth: 20
-  maxDamage: 20
+  maxHealth: 60
+  maxDamage: 15
   attackCooldown: 1
+  maxHealthSteal: 0
+  maxEnergySteal: 0

@@ -24,6 +24,11 @@ TagManager:
   - Fireball
   - heal
   - energy
+  - DialogPoint
+  - Bathilda's-ring
+  - NewAttack
+  - Sister
+  - NoOne
   layers:
   - Default
   - TransparentFX
@@ -33,8 +38,8 @@ TagManager:
   - UI
   - Mini-map
   - Ground
-  - 
-  - 
+  - Pontiff
+  - platform
   - 
   - 
   - 

@@ -44,7 +44,7 @@ public class Run : BaseState
         {
             stateMachine.stateChange(enemy.dead);
         }
-        if (enemy.attack)
+        if (enemy.attack && !enemyData.demon || (!enemy.isRunning && enemyData.demon && enemy.attack))
         {
             stateMachine.stateChange(enemy.simpleAttack);
         }
@@ -52,14 +52,7 @@ public class Run : BaseState
         {
             stateMachine.stateChange(enemy.patrol);
         }
-        if (enemy.isHitted)
-        {
-            stateMachine.stateChange(enemy.hit);
-        }
-        if (enemy.isDead)
-        {
-            stateMachine.stateChange(enemy.dead);
-        }
+      
         base.LogicUpdate();
     }
 }

@@ -57,7 +57,6 @@ public class Idle : BaseState
         }
         if (enemy.isDing)
         {
-            enemy.Dinging();
             stateMachine.stateChange(enemy.ding);
         }
         base.LogicUpdate();

@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayVideoController.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy2\MeelyEnemyContrl.cs" />
+    <Compile Include="Assets\Scripts\SisterCheck.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\ConversationNode.cs" />
     <Compile Include="Assets\Scripts\Boss\BossReward.cs" />
     <Compile Include="Assets\Scripts\Enemies\stateMachine\Dead.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Assets\Scripts\Enemies\stateMachine\StateMachine.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableConversation.cs" />
     <Compile Include="Assets\Scripts\ElevatorController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Ding.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\EditableSetParamAction.cs" />
     <Compile Include="Assets\Scripts\Enemies\stateMachine\BaseState.cs" />
     <Compile Include="Assets\Scripts\cammera.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Assets\Scripts\BookShelf.cs" />
     <Compile Include="Assets\SaveGame\Scripts\TestSaveGame.cs" />
     <Compile Include="Assets\Scripts\DialogManager.cs" />
+    <Compile Include="Assets\Scripts\openVideo.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy_Patrol.cs" />
     <Compile Include="Assets\Scripts\Enemies\stateMachine\Idle.cs" />
     <Compile Include="Assets\Scripts\Animations.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Assets\Scripts\IntroController.cs" />
     <Compile Include="Assets\Scripts\Enemies\stateMachine\Patrol.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\SetParamAction.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\Pray.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyWeapon.cs" />
     <Compile Include="Assets\Scripts\EnergyBar.cs" />
     <Compile Include="Assets\Scripts\InGameMenuController.cs" />
@@ -130,16 +134,16 @@
     <Compile Include="Assets\Scripts\PauseController.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
     <Compile Include="Assets\Scripts\Enemies\stateMachine\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemies\stateMachine\EnemyBullet.cs" />
     <Compile Include="Assets\Scripts\camChange.cs" />
     <Compile Include="Assets\Scripts\TooltipMenu.cs" />
     <Compile Include="Assets\DialogueEditor\Example\ExampleInputManager.cs" />
+    <Compile Include="Assets\Scripts\PontifCheck.cs" />
     <Compile Include="Assets\DialogueEditor\Assets\Scripts\NodeEventHolder.cs" />
     <Compile Include="Assets\Scripts\Boss\BossHealth.cs" />
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Boss\Boss.cs" />
     <Compile Include="Assets\Scripts\LogoController.cs" />
-    <Compile Include="Assets\Scripts\Enemies\stateMachine\Ding.cs" />
-    <Compile Include="Assets\Scripts\Enemies\stateMachine\Pray.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

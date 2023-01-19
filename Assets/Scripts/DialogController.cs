@@ -13,7 +13,9 @@ public class DialogController : MonoBehaviour
    
     private void Start()
     {
-       
+        if (SaveSystem.GetBool(gameObject.name)) {
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        }
     }
     private void Update()
     {
@@ -22,14 +24,12 @@ public class DialogController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log(collision.gameObject.tag);
+            SaveSystem.SetBool(gameObject.name, true);
+            //Debug.Log(collision.gameObject.tag);
             Conversation();
-            Destroy(gameObject);
-
+            gameObject.GetComponent<BoxCollider2D>().enabled = false; 
         }
         
     }

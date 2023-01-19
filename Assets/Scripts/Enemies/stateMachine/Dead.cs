@@ -35,7 +35,26 @@ public class Dead : BaseState
 
     public override void LogicUpdate()
     {
+        
         enemy.StartCoroutine("Res");
+        if (!Upd_PlayerControl.Instance.Save3.enabled)
+        {
+            Debug.Log("1save");
+            Upd_PlayerControl.Instance.Save3.enabled = true;
+        }
+        else if (!Upd_PlayerControl.Instance.Save2.enabled && !Upd_PlayerControl.Instance.Save3.enabled)
+        {
+            Debug.Log("2save");
+            Upd_PlayerControl.Instance.Save2.enabled = true;
+        }
+        else if (!Upd_PlayerControl.Instance.Save1.enabled && !Upd_PlayerControl.Instance.Save2.enabled && !Upd_PlayerControl.Instance.Save3.enabled)
+        {
+            Debug.Log("3save");
+            Upd_PlayerControl.Instance.Save1.enabled = true;
+
+        }
+
+        if (enemyData.spirit) Upd_PlayerControl.Instance.ResetStates();
         enemy.isDead = false;
         base.LogicUpdate();
     }
