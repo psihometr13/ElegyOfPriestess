@@ -43459,7 +43459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 800580918}
-  hintText: F - to pick up, 7/8 - attack
+  hintText: F - to pick up, 7 - attack
   text: {fileID: 1409326339}
 --- !u!61 &945255322
 BoxCollider2D:
@@ -88582,7 +88582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 800580918}
-  hintText: 9 - God attack
+  hintText: 8 - Strong attack
   text: {fileID: 1409326339}
 --- !u!61 &1974499896
 BoxCollider2D:
