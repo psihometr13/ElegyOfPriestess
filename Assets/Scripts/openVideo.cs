@@ -9,10 +9,12 @@ public class openVideo : MonoBehaviour
     {
         Upd_PlayerControl.Instance.SaveGame();
         SceneManager.LoadScene(3);
+        SoundManager.Instance.Stop();
     }
     public void SceneEnd()
     {
         Upd_PlayerControl.Instance.SaveGame();
         SceneManager.LoadScene(5);
+        SoundManager.Instance.Stop();
     }
 }

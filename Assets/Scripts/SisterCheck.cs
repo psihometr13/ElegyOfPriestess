@@ -12,6 +12,8 @@ public class SisterCheck : MonoBehaviour
     GameObject wall;
     GameObject spike;
     GameObject elevator;
+
+    
     private void Start()
     {
         _anim = GetComponent<Animator>();
@@ -19,6 +21,7 @@ public class SisterCheck : MonoBehaviour
         wall = GameObject.Find("NOEnterBasement");
         spike = GameObject.Find("Spike");
         elevator = GameObject.Find("point1_10");
+     
 
     }
     IEnumerator Diss()
@@ -33,7 +36,8 @@ public class SisterCheck : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         SaveSystem.SetBool("issister", true);
-      
+        SaveSystem.SetBool("doorOpened", true);
+        SoundManager.Instance.Stop();
         Upd_PlayerControl.Instance.SaveGame();
         SceneManager.LoadScene(4);
     }

@@ -53,7 +53,8 @@ public class Upd_PlayerControl : MonoBehaviour
 	public GameObject weapon;
     public GameObject doorTeleport;
 	public GameObject sister;
-
+	public bool gameSaved;
+    GameObject finalDoor;
 
     //Health
     [Header("Health Parameters")]
@@ -122,9 +123,18 @@ public class Upd_PlayerControl : MonoBehaviour
     [SerializeField] Image energyDebuff;
     [SerializeField] Image healthDebuff;
 
+    [Header("Music parameters")]
+    public AudioClip locationMusic;
+    public AudioClip SisterMusic;
+    public AudioClip PontiffMusic;
+    public AudioClip MobsMusic;
     void Start()
 	{
-		UnityEngine.Debug.Log(countOfDeaths);
+		
+
+        gameSaved = false;
+        finalDoor = GameObject.Find("finalDoor");
+        UnityEngine.Debug.Log(countOfDeaths);
         GameObject.Find("SpawnPoint"); //spawn
         healthDebuff.enabled = false;
         energyDebuff.enabled = false;
@@ -144,6 +154,10 @@ public class Upd_PlayerControl : MonoBehaviour
         spawnPoint.transform.position = gameObject.transform.position;
 		if(isRingUsed) GameObject.FindGameObjectsWithTag("Bathilda's-ring")[0].SetActive(false);
 		if(isRosaryUsed) GameObject.FindGameObjectsWithTag("Rosary")[0].SetActive(false);
+        if (!SaveSystem.GetBool("doorOpened"))
+        {
+            finalDoor.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        }
     }
 	private void Awake()
 	{
@@ -250,6 +264,7 @@ public class Upd_PlayerControl : MonoBehaviour
 
 	void Update()
 	{
+        UnityEngine.Debug.Log(SaveSystem.GetBool("doorOpened"));
         //UnityEngine.Debug.Log(countOfMagic);
         countOfVisitedLoc = secretRoom1 + secretRoom2;
 		//UnityEngine.Debug.Log(currentRoom);
@@ -516,6 +531,7 @@ public class Upd_PlayerControl : MonoBehaviour
 		Save2.enabled = false;
 		Save3.enabled = false;
 
+
 		if (SaveSystem.GetBool("issister"))
 		{
 			Destroy(sister);
@@ -563,6 +579,7 @@ public class Upd_PlayerControl : MonoBehaviour
 
     public void SaveGame()
 	{
+		gameSaved = true;
 		Save1.enabled = false;
 		Save2.enabled = false;
 		Save3.enabled = false;
@@ -572,6 +589,10 @@ public class Upd_PlayerControl : MonoBehaviour
         if (newAtck)
 		{
             SaveSystem.SetBool("NewAttack", true);
+        }
+		if (gameSaved)
+		{
+            SaveSystem.SetBool("withWeapon", true);
         }
 		////General
 		SaveSystem.SetVector2("PlayerPosition", transform.position);
@@ -601,7 +622,17 @@ public class Upd_PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.tag == "DeadZone")
+        if (collision.gameObject.tag == "currentRooom")
+        {
+            currentRoom = rooms.IndexOf(collision.gameObject);
+            //UnityEngine.Debug.Log(currentRoom);
+
+            if (currentRoom == 9) SoundManager.Instance.PlayMusic(MobsMusic);
+            else if (currentRoom == 2) SoundManager.Instance.PlayMusic(PontiffMusic);
+            else if (currentRoom == 5) SoundManager.Instance.PlayMusic(SisterMusic);
+            else SoundManager.Instance.PlayMusic(locationMusic);
+        }
+        if (collision.gameObject.tag == "DeadZone")
 		{
 			DiePlayer();
 		}

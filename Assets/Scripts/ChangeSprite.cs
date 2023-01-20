@@ -12,13 +12,14 @@ public class ChangeSprite : MonoBehaviour
     GameObject doorTeleport;
     public bool check =false;
     public bool check2 =false;
+    
 
     private void Start()
     {
-        
         doorTeleport = GameObject.FindGameObjectsWithTag("Teleporter")[0];
        if(!SaveSystem.GetBool("withWeapon"))
         {
+            
             doorTeleport.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             doorTeleport.gameObject.GetComponent<TeleportSystem>().enabled = false;
         }
@@ -33,11 +34,13 @@ public class ChangeSprite : MonoBehaviour
                 this.GetComponent<Animator>().runtimeAnimatorController = anim2 as RuntimeAnimatorController;
                 Destroy(weapon);
                 doorTeleport.gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                SaveSystem.SetBool("withWeapon", true);
+                
+              // SaveSystem.SetBool("withWeapon", true);
             }
         }
         if (check2)
         {
+            
             SaveSystem.SetBool("withWeapon", false);
             this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
         }
