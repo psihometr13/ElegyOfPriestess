@@ -29,12 +29,14 @@ public class ItemsPickUp : MonoBehaviour
                 {
                     SaveSystem.SetBool($"{gameObject.name}", true);
                     Upd_PlayerControl.Instance.maxHealth += 10;
+                    Upd_PlayerControl.Instance.tmpHp += 10;
                     Upd_PlayerControl.Instance.countOfUsedHeals += 1;
                 }
                 if (gameObject.tag == "energy")
                 {
                     SaveSystem.SetBool($"{gameObject.name}", true);
                     Upd_PlayerControl.Instance.maxEnergy += 10;
+                    Upd_PlayerControl.Instance.tmpEn += 10;
                 }
                 //Destroy(this);
                 //Destroy(this.gameObject.GetComponent<SpriteRenderer>());

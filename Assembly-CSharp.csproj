@@ -144,6 +144,7 @@
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Boss\Boss.cs" />
     <Compile Include="Assets\Scripts\LogoController.cs" />
+    <Compile Include="Assets\Scripts\end.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

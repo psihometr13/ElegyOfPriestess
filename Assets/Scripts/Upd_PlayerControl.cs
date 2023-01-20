@@ -20,6 +20,9 @@ public class Upd_PlayerControl : MonoBehaviour
 
     [SerializeField] private Text HP;
     [SerializeField] private Text Mana;
+    [SerializeField] GameObject wall;
+    [SerializeField] public GameObject spike;
+    [SerializeField] public GameObject elevator;
     public static Upd_PlayerControl Instance { get; private set; }
 	//Move
 	public float speed = 4; // швидкість руху
@@ -119,7 +122,8 @@ public class Upd_PlayerControl : MonoBehaviour
     public RuntimeAnimatorController anim2;
     public RuntimeAnimatorController anim3;
 	bool newAtck = false;
-
+	public float tmpHp;
+	public float tmpEn;
     [SerializeField] Image energyDebuff;
     [SerializeField] Image healthDebuff;
 
@@ -145,7 +149,8 @@ public class Upd_PlayerControl : MonoBehaviour
 		body.freezeRotation = true;
 		curHealth = maxHealth;
 		curEnergy = maxEnergy;
-
+		tmpEn = maxEnergy;
+		tmpHp = maxHealth;
         if (MenuController.Instance.newGame == false && 
 			File.Exists(Path.Combine(@"C:\Users\Beebo\AppData\LocalLow\Dream\ElegyOfPriestess\", "Profile.bin")))
         LoadGame(); 
@@ -467,8 +472,8 @@ public class Upd_PlayerControl : MonoBehaviour
 	{
         healthDebuff.enabled = false;
         energyDebuff.enabled = false;
-        maxHealth = 100;
-        maxEnergy = 100;
+        maxHealth = tmpHp;
+        maxEnergy = tmpEn;
         countOfDeaths += 1;
         countOfDeathsTotal += 1;
     }
@@ -482,8 +487,8 @@ public class Upd_PlayerControl : MonoBehaviour
 		curHealth = 0;
 		isDead = true;
 		this.transform.position = spawnPoint.transform.position;
-		curHealth = maxHealth;
-		curEnergy = maxEnergy;
+		curHealth = tmpHp;
+		curEnergy = tmpEn;
 	}
 
 	void RestoreHealth()
@@ -535,7 +540,10 @@ public class Upd_PlayerControl : MonoBehaviour
 		if (SaveSystem.GetBool("issister"))
 		{
 			Destroy(sister);
-           // this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+			// this.GetComponent<Animator>().runtimeAnimatorController = anim3 as RuntimeAnimatorController;
+			Destroy(wall);
+			Destroy(spike);
+            elevator.transform.position = new Vector3(-94, -127, 0);
         }
 		if (SaveSystem.GetBool("withWeapon"))
 		{
@@ -585,6 +593,7 @@ public class Upd_PlayerControl : MonoBehaviour
 		Save3.enabled = false;
 		
 		countOfDeaths = 0;
+        spawnPoint.transform.position = gameObject.transform.position;
 
         if (newAtck)
 		{

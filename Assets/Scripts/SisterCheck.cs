@@ -9,18 +9,18 @@ public class SisterCheck : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public GameObject _gameObject;
     public bool check = false;
-    GameObject wall;
-    GameObject spike;
-    GameObject elevator;
+    [SerializeField] GameObject wall;
+    [SerializeField] public GameObject spike;
+    [SerializeField] public GameObject elevator;
 
     
     private void Start()
     {
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        wall = GameObject.Find("NOEnterBasement");
-        spike = GameObject.Find("Spike");
-        elevator = GameObject.Find("point1_10");
+        //wall = GameObject.Find("NOEnterBasement");
+        //spike = GameObject.Find("Spike");
+        //elevator = GameObject.Find("point1_10");
      
 
     }
@@ -49,7 +49,7 @@ public class SisterCheck : MonoBehaviour
     public void diasNo(GameObject _gameObject)
     {
         _gameObject.transform.gameObject.tag = "NoOne";
-
+        SaveSystem.SetBool("doorOpened", true);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
