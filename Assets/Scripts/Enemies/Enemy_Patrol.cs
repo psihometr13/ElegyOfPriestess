@@ -40,7 +40,7 @@ public class Enemy_Patrol : StateMachineBehaviour
         if (movingLeft)
         {
             if (enemy.transform.position.x >= leftEdge.x)
-                MoveInDirection(-1);
+                MoveInDirection(1);
             else
             {
                 idleTimer += Time.deltaTime;
@@ -53,7 +53,7 @@ public class Enemy_Patrol : StateMachineBehaviour
         else
         {
             if (enemy.transform.position.x <= rightEdge.x)
-                MoveInDirection(1);
+                MoveInDirection(-1);
             else
             {
                 idleTimer += Time.deltaTime;
